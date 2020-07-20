@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { OAuth } from "@wso2is/oauth-web-worker";
-import { HttpMethods } from "@wso2is/core/models";
-import { store } from "../store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpMethods } from "@wso2is/core/models";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { AccessTokenPostBody, RegenerateAccessTokenPostBody } from "../models";
+import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
