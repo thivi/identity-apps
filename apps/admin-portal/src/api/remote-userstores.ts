@@ -220,3 +220,41 @@ export const listAgents = (domain: string): Promise<any> => {
             );
         });
 };
+
+export const deleteAgent = (domain: string): Promise<any> => {
+    const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${store.getState().config.endpoints.remoteUserstoreAgentManagement}/${domain}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    "An error occurred while retrieving the access token",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            throw new IdentityAppsApiException(
+                "An error occurred while retrieving the access token",
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
+};
