@@ -121,7 +121,7 @@ export const deactivateToken = (domain: string): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while retrieving the access token",
+                    "An error occurred while deactivating the access token",
                     null,
                     response.status,
                     response.request,
@@ -134,7 +134,7 @@ export const deactivateToken = (domain: string): Promise<any> => {
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while retrieving the access token",
+                "An error occurred while deactivating the access token",
                 error.stack,
                 error.code,
                 error.request,
@@ -153,14 +153,14 @@ export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<an
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.remoteUserstoreTokenManagement}/regenerate`,
+        url: `${store.getState().config.endpoints.remoteUserstoreTokenManagement}/regenerate`
     };
 
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while retrieving the access token",
+                    "An error occurred while regenerating the access token",
                     null,
                     response.status,
                     response.request,
@@ -173,7 +173,7 @@ export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<an
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while retrieving the access token",
+                "An error occurred while regenerating the access token",
                 error.stack,
                 error.code,
                 error.request,
@@ -198,7 +198,7 @@ export const listAgents = (domain: string): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while retrieving the access token",
+                    "An error occurred while retrieving the agents",
                     null,
                     response.status,
                     response.request,
@@ -211,7 +211,7 @@ export const listAgents = (domain: string): Promise<any> => {
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while retrieving the access token",
+                "An error occurred while retrieving the agents",
                 error.stack,
                 error.code,
                 error.request,
@@ -236,7 +236,7 @@ export const deleteAgent = (domain: string): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while retrieving the access token",
+                    "An error occurred while deleting the agent",
                     null,
                     response.status,
                     response.request,
@@ -249,7 +249,7 @@ export const deleteAgent = (domain: string): Promise<any> => {
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while retrieving the access token",
+                "An error occurred while deleting the agent",
                 error.stack,
                 error.code,
                 error.request,
@@ -274,7 +274,7 @@ export const retrieveFilePath = (): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while retrieving the access token",
+                    "An error occurred while retrieving the file path",
                     null,
                     response.status,
                     response.request,
@@ -287,7 +287,7 @@ export const retrieveFilePath = (): Promise<any> => {
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while retrieving the access token",
+                "An error occurred while retrieving the file path",
                 error.stack,
                 error.code,
                 error.request,
