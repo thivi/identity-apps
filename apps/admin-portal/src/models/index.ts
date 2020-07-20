@@ -25,3 +25,4 @@ export * from "./roles";
 export * from "./governance-connectors";
 export * from "./user";
 export * from "./user-stores";
+export * from "./remote-userstore";
