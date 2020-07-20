@@ -23,3 +23,4 @@ export * from "./roles";
 export * from "./governance-connectors";
 export * from "./user-stores";
 export * from "./users";
+export * from "./remote-userstores";
