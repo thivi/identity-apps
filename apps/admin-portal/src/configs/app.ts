@@ -119,6 +119,9 @@ export class Config {
                 }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
             permission: `${this.getDeploymentConfig().serverHost}/api/server/v1/permission-management/permissions`,
             publicCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs/public`,
+            remoteUserstoreAgentManagement: `${this.getDeploymentConfig().serverHost}/api/cloud/v1/userstore/agent/`,
+            remoteUserstoreTokenManagement
+                : `${this.getDeploymentConfig().serverHost}/api/cloud/v1/onprem/userstore/token/`,
             requestPathAuthenticators:
                 `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
             selfSignUp: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
