@@ -114,7 +114,46 @@ export const deactivateToken = (domain: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${store.getState().config.endpoints.remoteUserstoreTokenManagement}/revoke/${domain}`,
+        url: `${store.getState().config.endpoints.remoteUserstoreTokenManagement}/revoke/${domain}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    "An error occurred while retrieving the access token",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            throw new IdentityAppsApiException(
+                "An error occurred while retrieving the access token",
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
+};
+
+export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<any> => {
+    const requestConfig = {
+        data: data,
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${store.getState().config.endpoints.remoteUserstoreTokenManagement}/regenerate`,
     };
 
     return httpClient(requestConfig)
