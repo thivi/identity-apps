@@ -29,6 +29,13 @@ import { store } from "../store";
  */
 const httpClient = OAuth.getInstance().httpRequest;
 
+/**
+ * Create a token for a userstore domain.
+ * 
+ * @param {AccessTokenPostBody} data Request body data.
+ * 
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
 export const createToken = (data: AccessTokenPostBody): Promise<any> => {
     const requestConfig = {
         data: data,
@@ -68,6 +75,13 @@ export const createToken = (data: AccessTokenPostBody): Promise<any> => {
         });
 };
 
+/**
+ * Get a userstore domain's access token.
+ * 
+ * @param {string} domain The userstore domain.
+ * 
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
 export const retrieveToken = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -106,6 +120,13 @@ export const retrieveToken = (domain: string): Promise<any> => {
         });
 };
 
+/**
+ * Deactivate an access token.
+ * 
+ * @param {string} domain The userstore domain.
+ * 
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
 export const deactivateToken = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -144,6 +165,13 @@ export const deactivateToken = (domain: string): Promise<any> => {
         });
 };
 
+/**
+ * Regenerate an access token.
+ * 
+ * @param {RegenerateAccessTokenPostBody} data The request body.
+ * 
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
 export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<any> => {
     const requestConfig = {
         data: data,
@@ -183,6 +211,13 @@ export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<an
         });
 };
 
+/**
+ * List the agents belonging to a userstore domain. 
+ * 
+ * @param {string} domain The userstore domain.
+ * 
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
 export const listAgents = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -221,6 +256,13 @@ export const listAgents = (domain: string): Promise<any> => {
         });
 };
 
+/**
+ * Delete an agent.
+ * 
+ * @param domain 
+ * 
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
 export const deleteAgent = (domain: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -259,6 +301,11 @@ export const deleteAgent = (domain: string): Promise<any> => {
         });
 };
 
+/**
+ * Get the file path of the agent app.
+ * 
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
 export const retrieveFilePath = (): Promise<any> => {
     const requestConfig = {
         headers: {
