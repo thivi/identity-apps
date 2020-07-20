@@ -120,6 +120,8 @@ export interface ServiceResourceEndpointsInterface {
     passwordPolicy: string;
     permission: string;
     publicCertificates: string;
+    remoteUserstoreTokenManagement: string;
+    remoteUserstoreAgentManagement: string;
     requestPathAuthenticators: string;
     selfSignUp: string;
     serverConfigurations: string;
