@@ -220,7 +220,8 @@ export const UserstoreTemplateIllustrations = {
     ad: ActiveDirectoryUserstoreIllustration,
     default: CustomApplicationTemplateIllustration,
     jdbc: JDBCUserstoreIllustration,
-    ldap: LDAPUserstoreIllustration
+    ldap: LDAPUserstoreIllustration,
+    remote: LDAPUserstoreIllustration
 };
 
 export const OverviewPageIllustrations = {
