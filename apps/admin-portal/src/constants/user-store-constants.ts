@@ -25,6 +25,15 @@
  */
 export const JDBC = "JDBC";
 
+/**
+ *  ID for remote userstore type.
+ *
+ * @constant
+ *
+ * @type {string}
+ */
+export const REMOTE_USERSTORE_ID = "RemoteUserstore";
+
 export const USER_STORE_TYPE_DESCRIPTIONS = {
     ActiveDirectoryUserStoreManager: "Active Directory based userstore.",
     CarbonRemoteUserStoreManger: "Userstore on another Identity Server instance.",
@@ -32,6 +41,7 @@ export const USER_STORE_TYPE_DESCRIPTIONS = {
     ReadOnlyLDAPUserStoreManager: "Lightweight Directory Access Protocol based userstore which is read only.",
     ReadWriteLDAPUserStoreManager:
         "Lightweight Directory Access Protocol based userstore " + "which can both be read and written to",
+    RemoteUserstore: "Connect your onprem LDAP userstores.",
     UniqueIDActiveDirectoryUserStoreManager: "Active Directory based userstore.",
     UniqueIDJDBCUserStoreManager: "Java Database Connectivity based userstore.",
     UniqueIDReadOnlyLDAPUserStoreManager: "Lightweight Directory Access Protocol based userstore which is read only.",
@@ -45,6 +55,7 @@ export const USERSTORE_TYPE_DISPLAY_NAMES = {
     JDBCUserStoreManager: "JDBC",
     ReadOnlyLDAPUserStoreManager: "Read Only LDAP",
     ReadWriteLDAPUserStoreManager: "Read Write LDAP",
+    RemoteUserstore: "Remote Userstore",
     UniqueIDActiveDirectoryUserStoreManager: "Active Directory",
     UniqueIDJDBCUserStoreManager: "JDBC",
     UniqueIDReadOnlyLDAPUserStoreManager: "Read Only LDAP",
@@ -60,6 +71,7 @@ export const USERSTORE_TYPE_IMAGES = {
     JDBCUserStoreManager: "jdbc",
     ReadOnlyLDAPUserStoreManager: "ldap",
     ReadWriteLDAPUserStoreManager: "ldap",
+    RemoteUserstore: "remote",
     UniqueIDActiveDirectoryUserStoreManager: "ad",
     UniqueIDJDBCUserStoreManager: "jdbc",
     UniqueIDReadOnlyLDAPUserStoreManager: "ldap",
