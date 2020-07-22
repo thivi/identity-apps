@@ -27,6 +27,7 @@ import { AddUserStore } from "../../components";
 import { EmptyPlaceholderIllustrations, UserstoreTemplateIllustrations } from "../../configs";
 import {
     AppConstants,
+    REMOTE_USERSTORE_ID,
     USERSTORE_TYPE_DISPLAY_NAMES,
     USERSTORE_TYPE_IMAGES,
     USER_STORE_TYPE_DESCRIPTIONS
@@ -135,6 +136,29 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                     }
                 }
             });
+
+            // Append remote userstore type to `uniqueUserstoreTypes`
+            // to make it appear after all the unique userstore types
+            uniqueUserstoreTypes.push({
+                description: USER_STORE_TYPE_DESCRIPTIONS.RemoteUserstore,
+                id: REMOTE_USERSTORE_ID,
+                image: USERSTORE_TYPE_IMAGES[ REMOTE_USERSTORE_ID ],
+                name: USERSTORE_TYPE_DISPLAY_NAMES.RemoteUserstore
+            });
+
+            rawUserstoreTypes.push({
+                className: "",
+                description: USER_STORE_TYPE_DESCRIPTIONS.RemoteUserstore,
+                name: USERSTORE_TYPE_DISPLAY_NAMES.RemoteUserstore,
+                properties: {
+                    Advanced: [],
+                    Mandatory: [],
+                    Optional: []
+                },
+                typeId: REMOTE_USERSTORE_ID,
+                typeName: USERSTORE_TYPE_DISPLAY_NAMES.RemoteUserstore
+            });
+
             setUserstoreTypes(uniqueUserstoreTypes.concat(userstoreTypes));
             setRawUserstoreTypes(rawUserstoreTypes);
         }).catch(error => {
@@ -176,7 +200,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                     },
                     text: t("adminPortal:components.userstores.pageLayout.templates.back")
                 }
-                } 
+                }
                 titleTextAlign="left"
                 bottomMargin={ false }
                 showBottomDivider
