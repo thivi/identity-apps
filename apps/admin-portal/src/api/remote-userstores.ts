@@ -31,9 +31,9 @@ const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Create a token for a userstore domain.
- * 
+ *
  * @param {AccessTokenPostBody} data Request body data.
- * 
+ *
  * @return {Promise<any>} A promise that resolves with the returned data.
  */
 export const createToken = (data: AccessTokenPostBody): Promise<any> => {
@@ -52,7 +52,7 @@ export const createToken = (data: AccessTokenPostBody): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while inserting an access token",
+                    "An error occurred while inserting the userstore secret",
                     null,
                     response.status,
                     response.request,
@@ -65,21 +65,21 @@ export const createToken = (data: AccessTokenPostBody): Promise<any> => {
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while inserting an access token",
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
+                "An error occurred while inserting the userstore secret",
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
             );
         });
 };
 
 /**
  * Get a userstore domain's access token.
- * 
+ *
  * @param {string} domain The userstore domain.
- * 
+ *
  * @return {Promise<any>} A promise that resolves with the returned data.
  */
 export const retrieveToken = (domain: string): Promise<any> => {
@@ -97,7 +97,7 @@ export const retrieveToken = (domain: string): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while retrieving the access token",
+                    "An error occurred while retrieving the userstore secret",
                     null,
                     response.status,
                     response.request,
@@ -110,21 +110,21 @@ export const retrieveToken = (domain: string): Promise<any> => {
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while retrieving the access token",
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
+                "An error occurred while retrieving the userstore secret",
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
             );
         });
 };
 
 /**
  * Deactivate an access token.
- * 
+ *
  * @param {string} domain The userstore domain.
- * 
+ *
  * @return {Promise<any>} A promise that resolves with the returned data.
  */
 export const deactivateToken = (domain: string): Promise<any> => {
@@ -142,7 +142,7 @@ export const deactivateToken = (domain: string): Promise<any> => {
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while deactivating the access token",
+                    "An error occurred while deactivating the userstore secret",
                     null,
                     response.status,
                     response.request,
@@ -155,21 +155,21 @@ export const deactivateToken = (domain: string): Promise<any> => {
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while deactivating the access token",
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
+                "An error occurred while deactivating the userstore secret",
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
             );
         });
 };
 
 /**
  * Regenerate an access token.
- * 
+ *
  * @param {RegenerateAccessTokenPostBody} data The request body.
- * 
+ *
  * @return {Promise<any>} A promise that resolves with the returned data.
  */
 export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<any> => {
@@ -188,7 +188,7 @@ export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<an
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "An error occurred while regenerating the access token",
+                    "An error occurred while regenerating the userstore secret",
                     null,
                     response.status,
                     response.request,
@@ -201,21 +201,21 @@ export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<an
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
-                "An error occurred while regenerating the access token",
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
+                "An error occurred while regenerating the userstore secret",
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
             );
         });
 };
 
 /**
- * List the agents belonging to a userstore domain. 
- * 
+ * List the agents belonging to a userstore domain.
+ *
  * @param {string} domain The userstore domain.
- * 
+ *
  * @return {Promise<any>} A promise that resolves with the returned data.
  */
 export const listAgents = (domain: string): Promise<any> => {
@@ -247,20 +247,20 @@ export const listAgents = (domain: string): Promise<any> => {
         .catch((error) => {
             throw new IdentityAppsApiException(
                 "An error occurred while retrieving the agents",
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
             );
         });
 };
 
 /**
  * Delete an agent.
- * 
- * @param domain 
- * 
+ *
+ * @param domain
+ *
  * @return {Promise<any>} A promise that resolves with the returned data.
  */
 export const deleteAgent = (domain: string): Promise<any> => {
@@ -292,18 +292,18 @@ export const deleteAgent = (domain: string): Promise<any> => {
         .catch((error) => {
             throw new IdentityAppsApiException(
                 "An error occurred while deleting the agent",
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
             );
         });
 };
 
 /**
  * Get the file path of the agent app.
- * 
+ *
  * @return {Promise<any>} A promise that resolves with the returned data.
  */
 export const retrieveFilePath = (): Promise<any> => {
@@ -335,11 +335,11 @@ export const retrieveFilePath = (): Promise<any> => {
         .catch((error) => {
             throw new IdentityAppsApiException(
                 "An error occurred while retrieving the file path",
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
             );
         });
 };
