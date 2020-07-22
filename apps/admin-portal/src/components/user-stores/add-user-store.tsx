@@ -24,16 +24,17 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
+import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails, GeneralRemoteUserstore, AgentRemoteUserstore, SummaryRemoteUserstore } from "./wizards";
 import { addUserStore } from "../../api";
 import { AddUserstoreWizardStepIcons } from "../../configs";
-import { AppConstants, USERSTORE_TYPE_DISPLAY_NAMES } from "../../constants";
+import { AppConstants, REMOTE_USERSTORE_ID, USERSTORE_TYPE_DISPLAY_NAMES } from "../../constants";
 import { history } from "../../helpers";
 import {
     CategorizedProperties,
     UserStorePostData,
     UserStoreProperty,
-    UserstoreType
+    UserstoreType,
+    AccessTokenPostBody
 } from "../../models";
 import { reOrganizeProperties } from "../../utils";
 
@@ -77,10 +78,13 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     const [ groupDetailsData, setGroupDetailsData ] = useState<Map<string, FormValue>>(null);
     const [ userStore, setUserStore ] = useState<UserStorePostData>(null);
     const [ properties, setProperties ] = useState<CategorizedProperties>(null);
+    const [ generalStepRemoteData, setGeneralStepRemoteData ] = useState<AccessTokenPostBody>(null);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ secondStep, setSecondStep ] = useTrigger();
     const [ thirdStep, setThirdStep ] = useTrigger();
+    const [ generalStepRemote, setGeneralStepRemote ] = useTrigger();
+    const [ agentStepRemote, setAgentStepRemote ] = useTrigger();
 
     const dispatch = useDispatch();
 
@@ -124,8 +128,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t("adminPortal:components.userstores.notifications.addUserstore" +
                     ".genericError.description")
-            }))
-        })
+            }));
+        });
     };
 
     /**
@@ -146,6 +150,14 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
         setGroupDetailsData(values);
     };
 
+    const onSubmitGeneralRemoteStep = (values: AccessTokenPostBody): void => {
+        setGeneralStepRemoteData(values);
+    };
+
+    const completeAddingRemoteUserstore = (): void => {
+        //do something
+    };
+
     const serializeData = (): void => {
         const userStore: UserStorePostData = {
             description: generalDetailsData?.get("description")?.toString(),
@@ -162,28 +174,28 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             return {
                 name: property.name,
                 value: generalDetailsData.get(property.name)?.toString()
-            }
+            };
         });
 
         const userProperties: UserStoreProperty[] = properties.user.required.map(property => {
             return {
                 name: property.name,
                 value: userDetailsData.get(property.name)?.toString()
-            }
+            };
         });
 
         const groupProperties: UserStoreProperty[] = properties.group.required.map(property => {
             return {
                 name: property.name,
                 value: groupDetailsData.get(property.name)?.toString()
-            }
+            };
         });
 
         const basicProperties: UserStoreProperty[] = properties.basic.required.map(property => {
             return {
                 name: property.name,
                 value: generalDetailsData.get(property.name)?.toString()
-            }
+            };
         });
 
         return [ ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
@@ -192,82 +204,120 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     /**
      * This contains the wizard steps
      */
-    const STEPS = [
-        {
-            content: (
-                <GeneralDetailsUserstore
-                    submitState={ firstStep }
-                    onSubmit={ onSubmitGeneralDetails }
-                    values={ generalDetailsData }
-                    type={ type }
-                    connectionProperties={ properties?.connection?.required }
-                    basicProperties={ properties?.basic?.required }
-                    data-testid={ `${ testId }-general-details` }
-                />
-            ),
-            icon: AddUserstoreWizardStepIcons.general,
-            title: t ("adminPortal:components.userstores.wizard.steps.general")
-        },
-        {
-            content: (
-                <UserDetails
-                    submitState={ secondStep }
-                    onSubmit={ onSubmitUserDetails }
-                    values={ userDetailsData }
-                    properties={ properties?.user?.required }
-                    data-testid={ `${ testId }-user-details` }
-                />
-            ),
-            icon: AddUserstoreWizardStepIcons.general,
-            title: t("adminPortal:components.userstores.wizard.steps.user")
-        },
-        {
-            content: (
-                <GroupDetails
-                    submitState={ thirdStep }
-                    onSubmit={ onSubmitGroupDetails }
-                    values={ groupDetailsData }
-                    properties={ properties?.group?.required }
-                    data-testid={ `${ testId }-group-details` }
-                />
-            ),
-            icon: AddUserstoreWizardStepIcons.general,
-            title: t("adminPortal:components.userstores.wizard.steps.group")
-        },
-        {
-            content: (
-                <SummaryUserStores
-                    data={ userStore }
-                    connectionProperties={ properties?.connection?.required }
-                    userProperties={ properties?.user?.required }
-                    groupProperties={ properties?.group?.required }
-                    basicProperties={ properties?.basic?.required }
-                    type={ type?.typeName }
-                    data-testid={ `${ testId }-summary` }
-                />
-            ),
-            icon: AddUserstoreWizardStepIcons.general,
-            title: t("adminPortal:components.userstores.wizard.steps.summary")
-        }
-    ];
+    const STEPS =
+        type.typeId === REMOTE_USERSTORE_ID
+            ? [
+                {
+                    content: (
+                        <GeneralRemoteUserstore
+                            onSubmit={ onSubmitGeneralRemoteStep }
+                            triggerSubmit={ generalStepRemote }
+                        />
+                    ),
+                    icon: AddUserstoreWizardStepIcons.general,
+                    title: t("adminPortal:components.userstores.wizard.steps.general")
+                },
+                {
+                    content: <AgentRemoteUserstore />,
+                    icon: AddUserstoreWizardStepIcons.general,
+                    title: t("adminPortal:components.userstores.wizard.steps.general")
+                },
+                {
+                    content: <SummaryRemoteUserstore />,
+                    icon: AddUserstoreWizardStepIcons.general,
+                    title: t("adminPortal:components.userstores.wizard.steps.summary")
+                }
+            ]
+            : [
+                {
+                    content: (
+                        <GeneralDetailsUserstore
+                            submitState={ firstStep }
+                            onSubmit={ onSubmitGeneralDetails }
+                            values={ generalDetailsData }
+                            type={ type }
+                            connectionProperties={ properties?.connection?.required }
+                            basicProperties={ properties?.basic?.required }
+                            data-testid={ `${testId}-general-details` }
+                        />
+                    ),
+                    icon: AddUserstoreWizardStepIcons.general,
+                    title: t("adminPortal:components.userstores.wizard.steps.general")
+                },
+                {
+                    content: (
+                        <UserDetails
+                            submitState={ secondStep }
+                            onSubmit={ onSubmitUserDetails }
+                            values={ userDetailsData }
+                            properties={ properties?.user?.required }
+                            data-testid={ `${testId}-user-details` }
+                        />
+                    ),
+                    icon: AddUserstoreWizardStepIcons.general,
+                    title: t("adminPortal:components.userstores.wizard.steps.user")
+                },
+                {
+                    content: (
+                        <GroupDetails
+                            submitState={ thirdStep }
+                            onSubmit={ onSubmitGroupDetails }
+                            values={ groupDetailsData }
+                            properties={ properties?.group?.required }
+                            data-testid={ `${testId}-group-details` }
+                        />
+                    ),
+                    icon: AddUserstoreWizardStepIcons.general,
+                    title: t("adminPortal:components.userstores.wizard.steps.group")
+                },
+                {
+                    content: (
+                        <SummaryUserStores
+                            data={ userStore }
+                            connectionProperties={ properties?.connection?.required }
+                            userProperties={ properties?.user?.required }
+                            groupProperties={ properties?.group?.required }
+                            basicProperties={ properties?.basic?.required }
+                            type={ type?.typeName }
+                            data-testid={ `${testId}-summary` }
+                        />
+                    ),
+                    icon: AddUserstoreWizardStepIcons.general,
+                    title: t("adminPortal:components.userstores.wizard.steps.summary")
+                }
+            ];
 
     /**
      * Moves to the next step in the wizard
      */
     const next = () => {
-        switch (currentWizardStep) {
-            case 0:
-                setFirstStep();
-                break;
-            case 1:
-                setSecondStep();
-                break;
-            case 2:
-                setThirdStep();
-                break;
-            case 3:
-                handleSubmit();
-                break;
+        if (type.typeId === REMOTE_USERSTORE_ID) {
+            switch (currentWizardStep) {
+                case 0:
+                    setGeneralStepRemote();
+                    break;
+                case 1:
+                    setAgentStepRemote();
+                    break;
+                case 2:
+                    completeAddingRemoteUserstore();
+                    break;
+            }
+        } else {
+            switch (currentWizardStep) {
+                case 0:
+                    setFirstStep();
+                    break;
+                case 1:
+                    setSecondStep();
+                    break;
+                case 2:
+                    setThirdStep();
+                    break;
+                case 3:
+                    handleSubmit();
+                    break;
+            }
         }
     };
 
@@ -294,7 +344,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     })
                 }
             </Modal.Header>
-            <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
+            <Modal.Content className="steps-container" data-testid={ `${testId}-steps` }>
                 <Steps.Group
                     current={ currentWizardStep }
                 >
@@ -303,7 +353,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
-                            data-testid={ `${ testId }-step-${ index }` }
+                            data-testid={ `${testId}-step-${index}` }
                         />
                     )) }
                 </Steps.Group>
@@ -315,14 +365,14 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => onClose() }>{t("common:cancel")}</LinkButton>
+                            <LinkButton floated="left" onClick={ () => onClose() }>{ t("common:cancel") }</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ next }
-                                    data-testid={ `${ testId }-next-button` }
+                                    data-testid={ `${testId}-next-button` }
                                 >
                                     { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
@@ -331,7 +381,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                                 <PrimaryButton
                                     floated="right"
                                     onClick={ next }
-                                    data-testid={ `${ testId }-finish-button` }
+                                    data-testid={ `${testId}-finish-button` }
                                 >
                                     { t("common:finish") }</PrimaryButton>
                             ) }
@@ -339,7 +389,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                                 <LinkButton
                                     floated="right"
                                     onClick={ previous }
-                                    data-testid={ `${ testId }-previous-button` }
+                                    data-testid={ `${testId}-previous-button` }
                                 >
                                     <Icon name="arrow left" /> { t("common:previous") }
                                 </LinkButton>
@@ -349,7 +399,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 </Grid>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };
 
 /**
