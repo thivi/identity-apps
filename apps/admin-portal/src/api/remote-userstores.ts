@@ -61,7 +61,7 @@ export const createToken = (data: AccessTokenPostBody): Promise<any> => {
                 );
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
@@ -106,7 +106,7 @@ export const retrieveToken = (domain: string): Promise<any> => {
                 );
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
@@ -151,7 +151,7 @@ export const deactivateToken = (domain: string): Promise<any> => {
                 );
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
@@ -197,7 +197,7 @@ export const regenerateToken = (data: RegenerateAccessTokenPostBody): Promise<an
                 );
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
@@ -242,7 +242,7 @@ export const listAgents = (domain: string): Promise<any> => {
                 );
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
@@ -287,7 +287,7 @@ export const deleteAgent = (domain: string): Promise<any> => {
                 );
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
@@ -330,7 +330,7 @@ export const retrieveFilePath = (): Promise<any> => {
                 );
             }
 
-            return Promise.resolve(response);
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
