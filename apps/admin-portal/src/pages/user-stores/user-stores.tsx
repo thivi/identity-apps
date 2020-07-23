@@ -25,11 +25,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getUserStores } from "../../api";
+import { getUserStores, listRemoteUserstores } from "../../api";
 import { AdvancedSearchWithBasicFilters, UserStoresList } from "../../components";
 import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { FeatureConfigInterface, QueryParams, UserStoreListItem } from "../../models";
+import { FeatureConfigInterface, QueryParams, UserStoreListItem, AccessTokenPostBody } from "../../models";
 import { AppState } from "../../store";
 import { filterList, sortList } from "../../utils";
 
@@ -104,22 +104,63 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             sort: sort || null
         };
         setIsLoading(true);
-        getUserStores(params).then(response => {
-            setUserStores(response);
-            setFilteredUserStores(response);
-            setIsLoading(false);
-        }).catch(error => {
-            setIsLoading(false);
-            dispatch(addAlert(
-                {
-                    description: error?.description
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.message")
-                }
-            ));
-        });
+        getUserStores(params)
+            .then((response: UserStoreListItem[]) => {
+                //get remote userstores here
+                listRemoteUserstores()
+                    .then((remoteUserstores: AccessTokenPostBody[]) => {
+                        remoteUserstores?.forEach(remoteUserstore => {
+                            response.push({
+                                description: "",
+                                id: remoteUserstore.domain,
+                                name: remoteUserstore.domain,
+                                remote: true,
+                                self: ""
+                            });
+                        });
+
+                        setUserStores(response);
+                        setFilteredUserStores(response);
+                    })
+                    .catch((error) => {
+                        dispatch(
+                            addAlert({
+                                description:
+                                    error?.description ||
+                                    t(
+                                        "adminPortal:components.userstores.notifications" +
+                                        ".fetchUserstores.genericError.description"
+                                    ),
+                                level: AlertLevels.ERROR,
+                                message:
+                                    error?.message ||
+                                    t(
+                                        "adminPortal:components.userstores.notifications" +
+                                        ".fetchUserstores.genericError.message"
+                                    )
+                            })
+                        );
+                    }).finally(() => {
+                        setIsLoading(false);
+                    });
+            })
+            .catch((error) => {
+                dispatch(
+                    addAlert({
+                        description:
+                            error?.description ||
+                            t(
+                                "adminPortal:components.userstores.notifications." +
+                                "fetchUserstores.genericError.description"
+                            ),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.message ||
+                            t("adminPortal:components.userstores.notifications." +
+                                "fetchUserstores.genericError.message")
+                    })
+                );
+            });
     };
 
     useEffect(() => {
@@ -219,7 +260,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             title={ t("adminPortal:components.userstores.pageLayout.list.title") }
             description={ t("adminPortal:components.userstores.pageLayout.list.description") }
             showBottomDivider={ true }
-            data-testid={ `${ testId }-page-layout` }
+            data-testid={ `${testId}-page-layout` }
         >
             <ListLayout
                 advancedSearch={
@@ -255,7 +296,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
-                        data-testid={ `${ testId }-advanced-search` }
+                        data-testid={ `${testId}-advanced-search` }
                     />
                 }
                 currentListSize={ listItemLimit }
@@ -274,10 +315,10 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                             onClick={ () => {
                                 history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"));
                             } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
+                            data-testid={ `${testId}-list-layout-add-button` }
                         >
                             <Icon name="add" />
-                            { t("adminPortal:components.userstores.pageLayout.list.primaryAction")}
+                            { t("adminPortal:components.userstores.pageLayout.list.primaryAction") }
                         </PrimaryButton>
                     )
                 }
@@ -288,7 +329,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 showTopActionPanel={ isLoading || !(!searchQuery && filteredUserStores?.length <= 0) }
                 totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
                 totalListSize={ filteredUserStores?.length }
-                data-testid={ `${ testId }-list-layout` }
+                data-testid={ `${testId}-list-layout` }
             >
                 <UserStoresList
                     isLoading={ isLoading }
@@ -300,7 +341,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                     searchQuery={ searchQuery }
                     update={ fetchUserStores }
                     featureConfig={ featureConfig }
-                    data-testid={ `${ testId }-list` }
+                    data-testid={ `${testId}-list` }
                 />
             </ListLayout>
         </PageLayout>
