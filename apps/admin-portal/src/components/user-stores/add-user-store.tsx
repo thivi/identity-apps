@@ -163,6 +163,15 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     };
 
     const completeAddingRemoteUserstore = (): void => {
+
+        localStorage.setItem(
+            "remoteUserstore",
+            JSON.stringify(
+                localStorage.getItem("remoteUserstore")
+                    ? JSON.parse(localStorage.getItem("remoteUserstore")).push(generalStepRemoteData)
+                    : [ generalStepRemoteData ]
+            )
+        );
         onClose();
         history.push(AppConstants.PATHS.get("USERSTORES"));
     };
