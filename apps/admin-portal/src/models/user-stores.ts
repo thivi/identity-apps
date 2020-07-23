@@ -34,6 +34,7 @@ export interface UserStoreListItem {
     name: string;
     description: string;
     self: string;
+    remote?: boolean;
 }
 
 /**
