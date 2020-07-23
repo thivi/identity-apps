@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { Button, Grid, Message } from "semantic-ui-react";
-import { Field, FormValue, Forms } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useState } from "react";
-import { AccessTokenPostBody } from "../../../models";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { generate } from "generate-password";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Button, Grid, Message } from "semantic-ui-react";
 import { createToken } from "../../../api";
+import { AccessTokenPostBody } from "../../../models";
 
 /**
  * Userstore domain name.
@@ -80,14 +80,17 @@ export const GeneralRemoteUserstore: FunctionComponent<GeneralRemoteUserstorePro
                     domain: values.get(USERSTORE_DOMAIN).toString(),
                     token: values.get(USERSTORE_SECRET).toString()
                 };
-                createToken(data)
+                /* createToken(data)
                     .then(() => {
                         onSubmit(data);
+                        setError("");
+                        setErrorMessage("");
                     })
                     .catch((error) => {
                         setError(error?.response?.data?.description ?? error?.message);
                         setErrorMessage(error?.response?.data?.message ?? "");
-                    });
+                    }); */
+                onSubmit(data);
             } }
             submitState={ triggerSubmit }
         >
