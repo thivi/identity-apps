@@ -24,17 +24,25 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails, GeneralRemoteUserstore, AgentRemoteUserstore, SummaryRemoteUserstore } from "./wizards";
+import {
+    AgentRemoteUserstore,
+    GeneralDetailsUserstore,
+    GeneralRemoteUserstore,
+    GroupDetails,
+    SummaryRemoteUserstore,
+    SummaryUserStores,
+    UserDetails
+} from "./wizards";
 import { addUserStore } from "../../api";
 import { AddUserstoreWizardStepIcons } from "../../configs";
 import { AppConstants, REMOTE_USERSTORE_ID, USERSTORE_TYPE_DISPLAY_NAMES } from "../../constants";
 import { history } from "../../helpers";
 import {
+    AccessTokenPostBody,
     CategorizedProperties,
     UserStorePostData,
     UserStoreProperty,
-    UserstoreType,
-    AccessTokenPostBody
+    UserstoreType
 } from "../../models";
 import { reOrganizeProperties } from "../../utils";
 
@@ -84,7 +92,6 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
     const [ secondStep, setSecondStep ] = useTrigger();
     const [ thirdStep, setThirdStep ] = useTrigger();
     const [ generalStepRemote, setGeneralStepRemote ] = useTrigger();
-    const [ agentStepRemote, setAgentStepRemote ] = useTrigger();
 
     const dispatch = useDispatch();
 
@@ -152,10 +159,12 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
     const onSubmitGeneralRemoteStep = (values: AccessTokenPostBody): void => {
         setGeneralStepRemoteData(values);
+        setCurrentWizardStep(1);
     };
 
     const completeAddingRemoteUserstore = (): void => {
-        //do something
+        onClose();
+        history.push(AppConstants.PATHS.get("USERSTORES"));
     };
 
     const serializeData = (): void => {
@@ -212,18 +221,22 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                         <GeneralRemoteUserstore
                             onSubmit={ onSubmitGeneralRemoteStep }
                             triggerSubmit={ generalStepRemote }
+                            data-testid={ `${testId}-remote-userstore-general-details` }
                         />
                     ),
                     icon: AddUserstoreWizardStepIcons.general,
                     title: t("adminPortal:components.userstores.wizard.steps.general")
                 },
                 {
-                    content: <AgentRemoteUserstore />,
+                    content: <AgentRemoteUserstore
+                        userstoreData={ generalStepRemoteData }
+                        data-testid={ `${testId}-remote-userstore-agent` }
+                    />,
                     icon: AddUserstoreWizardStepIcons.general,
                     title: t("adminPortal:components.userstores.wizard.steps.general")
                 },
                 {
-                    content: <SummaryRemoteUserstore />,
+                    content: <SummaryRemoteUserstore userstoreData={ generalStepRemoteData } />,
                     icon: AddUserstoreWizardStepIcons.general,
                     title: t("adminPortal:components.userstores.wizard.steps.summary")
                 }
@@ -297,7 +310,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     setGeneralStepRemote();
                     break;
                 case 1:
-                    setAgentStepRemote();
+                    setCurrentWizardStep(2);
                     break;
                 case 2:
                     completeAddingRemoteUserstore();
@@ -338,16 +351,12 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
-                { t("adminPortal:components.userstores.wizard.header",
-                    {
-                        type: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
-                    })
-                }
+                { t("adminPortal:components.userstores.wizard.header", {
+                    type: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
+                }) }
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${testId}-steps` }>
-                <Steps.Group
-                    current={ currentWizardStep }
-                >
+                <Steps.Group current={ currentWizardStep }>
                     { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
@@ -357,7 +366,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                         />
                     )) }
                 </Steps.Group>
-            </Modal.Content >
+            </Modal.Content>
             <Modal.Content className="content-container" scrolling>
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
@@ -365,35 +374,34 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => onClose() }>{ t("common:cancel") }</LinkButton>
+                            <LinkButton floated="left" onClick={ () => onClose() }>
+                                { t("common:cancel") }
+                            </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ next }
-                                    data-testid={ `${testId}-next-button` }
-                                >
+                                <PrimaryButton floated="right" onClick={ next } data-testid={ `${testId}-next-button` }>
                                     { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton
-                                    floated="right"
-                                    onClick={ next }
+                                    floated="right" onClick={ next }
                                     data-testid={ `${testId}-finish-button` }
                                 >
-                                    { t("common:finish") }</PrimaryButton>
+                                    { t("common:finish") }
+                                </PrimaryButton>
                             ) }
-                            { currentWizardStep > 0 && (
-                                <LinkButton
-                                    floated="right"
-                                    onClick={ previous }
-                                    data-testid={ `${testId}-previous-button` }
-                                >
-                                    <Icon name="arrow left" /> { t("common:previous") }
-                                </LinkButton>
-                            ) }
+                            { ((type.typeId === REMOTE_USERSTORE_ID && currentWizardStep > 1) ||
+                                (type.typeId !== REMOTE_USERSTORE_ID && currentWizardStep > 0)) && (
+                                    <LinkButton
+                                        floated="right"
+                                        onClick={ previous }
+                                        data-testid={ `${testId}-previous-button` }
+                                    >
+                                        <Icon name="arrow left" /> { t("common:previous") }
+                                    </LinkButton>
+                                ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
