@@ -35,7 +35,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Image } from "semantic-ui-react";
-import { deleteUserStore } from "../../api";
+import { deleteUserStore, deleteAgent } from "../../api";
 import { DatabaseAvatarGraphic, EmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
@@ -104,7 +104,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
     /**
      * Delete a userstore.
-     * 
+     *
      * @param {string} id userstore id.
      * @param {string} name userstore name.
      */
@@ -137,7 +137,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 <p>
                     <Trans i18nKey="adminPortal:components.userstores.confirmation.hint">
                         Please type
-                        <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
+                        <strong data-testid={ `${testId}-delete-confirmation-modal-assertion` }>
                             { { name: deleteName } }
                         </strong > to confirm.
                     </Trans>
@@ -148,55 +148,90 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ closeDeleteConfirm }
             onPrimaryActionClick={ (): void => {
-                deleteUserStore(deleteID)
-                    .then(() => {
-                        dispatch(addAlert({
-                            description: t("adminPortal:components.userstores.notifications." +
-                                "deleteUserstore.success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("adminPortal:components.userstores.notifications." +
-                                "deleteUserstore.success.message")
+                if (list.find((userstore => userstore.id === deleteID && userstore.remote))) {
+                    deleteAgent(deleteID)
+                        .then(() => {
+                            dispatch(addAlert({
+                                description: t("adminPortal:components.userstores.notifications." +
+                                    "deleteUserstore.success.description"),
+                                level: AlertLevels.SUCCESS,
+                                message: t("adminPortal:components.userstores.notifications." +
+                                    "deleteUserstore.success.message")
 
-                        }));
-                        dispatch(addAlert({
-                            description: t("adminPortal:components.userstores.notifications." +
-                                "delay.description"),
-                            level: AlertLevels.WARNING,
-                            message: t("adminPortal:components.userstores.notifications." +
-                                "delay.message")
-                        }));
-                        update();
-                    })
-                    .catch(error => {
-                        dispatch(addAlert({
-                            description: error?.description
-                                ?? t("adminPortal:components.userstores.notifications." +
-                                    "deleteUserstore.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: error?.message
-                                ?? t("adminPortal:components.userstores.notifications." +
-                                    "deleteUserstore.genericError.message")
-                        }));
-                    }).finally(() => {
-                        closeDeleteConfirm();
-                    });
+                            }));
+                            dispatch(addAlert({
+                                description: t("adminPortal:components.userstores.notifications." +
+                                    "delay.description"),
+                                level: AlertLevels.WARNING,
+                                message: t("adminPortal:components.userstores.notifications." +
+                                    "delay.message")
+                            }));
+                            update();
+                        })
+                        .catch(error => {
+                            dispatch(addAlert({
+                                description: error?.description
+                                    ?? t("adminPortal:components.userstores.notifications." +
+                                        "deleteUserstore.genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message: error?.message
+                                    ?? t("adminPortal:components.userstores.notifications." +
+                                        "deleteUserstore.genericError.message")
+                            }));
+                        }).finally(() => {
+                            closeDeleteConfirm();
+                        });
+                } else {
+                    deleteUserStore(deleteID)
+                        .then(() => {
+                            dispatch(addAlert({
+                                description: t("adminPortal:components.userstores.notifications." +
+                                    "deleteUserstore.success.description"),
+                                level: AlertLevels.SUCCESS,
+                                message: t("adminPortal:components.userstores.notifications." +
+                                    "deleteUserstore.success.message")
+
+                            }));
+                            dispatch(addAlert({
+                                description: t("adminPortal:components.userstores.notifications." +
+                                    "delay.description"),
+                                level: AlertLevels.WARNING,
+                                message: t("adminPortal:components.userstores.notifications." +
+                                    "delay.message")
+                            }));
+                            update();
+                        })
+                        .catch(error => {
+                            dispatch(addAlert({
+                                description: error?.description
+                                    ?? t("adminPortal:components.userstores.notifications." +
+                                        "deleteUserstore.genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message: error?.message
+                                    ?? t("adminPortal:components.userstores.notifications." +
+                                        "deleteUserstore.genericError.message")
+                            }));
+                        }).finally(() => {
+                            closeDeleteConfirm();
+                        });
+                }
             } }
-            data-testid={ `${ testId }-delete-confirmation-modal` }
+            data-testid={ `${testId}-delete-confirmation-modal` }
         >
             <ConfirmationModal.Header
-                data-testid={ `${ testId }-delete-confirmation-modal-header` }
+                data-testid={ `${testId}-delete-confirmation-modal-header` }
             >
                 { t("adminPortal:components.userstores.confirmation.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
-                data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                data-testid={ `${testId}-delete-confirmation-modal-message` }
             >
                 { t("adminPortal:components.userstores.confirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
-                data-testid={ `${ testId }-delete-confirmation-modal-content` }
+                data-testid={ `${testId}-delete-confirmation-modal-content` }
             >
                 { t("adminPortal:components.userstores.confirmation.content") }
             </ConfirmationModal.Content>
@@ -227,7 +262,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                 searchQuery: searchQuery
                             })
                     ] }
-                    data-testid={ `${ testId }-empty-search-placeholder` }
+                    data-testid={ `${testId}-empty-search-placeholder` }
                 />
             );
         }
@@ -247,7 +282,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     subtitle={ [
                         t("adminPortal:components.userstores.placeholders.emptyList.subtitles")
                     ] }
-                    data-testid={ `${ testId }-empty-placeholder` }
+                    data-testid={ `${testId}-empty-placeholder` }
                 />
             );
         }
@@ -277,7 +312,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                         rounded
                                         centered
                                         size="mini"
-                                        data-testid={ `${ testId }-item-image` }
+                                        data-testid={ `${testId}-item-image` }
                                     >
                                         <DatabaseAvatarGraphic />
                                     </Image>
@@ -288,7 +323,9 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                         icon: "pencil alternate",
                                         onClick: () => {
                                             history.push(AppConstants.PATHS.get("USERSTORES_EDIT")
-                                                .replace(":id", userStore?.id));
+                                                .replace(":id", userStore?.remote
+                                                    ? "remote-" + userStore?.id
+                                                    : userStore?.id));
                                         },
                                         popupText: t("common:edit"),
                                         type: "button"
@@ -300,7 +337,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                             allowedScopes),
                                         icon: "trash alternate",
                                         onClick: () => {
-                                            initDelete(userStore?.id, userStore?.name)
+                                            initDelete(userStore?.id, userStore?.name);
                                         },
                                         popupText: t("common:delete"),
                                         type: "dropdown"
@@ -309,14 +346,14 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                 actionsFloated="right"
                                 itemHeader={ userStore.name }
                                 itemDescription={ userStore.description }
-                                data-testid={ `${ testId }-item` }
+                                data-testid={ `${testId}-item` }
                             />
                         ))
                         : showPlaceholders()
                 }
             </ResourceList>
         </>
-    )
+    );
 };
 
 /**
