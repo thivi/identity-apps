@@ -94,7 +94,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                     <div className="value">{ description }</div>
                 </Grid.Column>
             </Grid.Row>
-        )
+        );
     };
 
     return (
@@ -118,11 +118,11 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
+                                    return userStoreProperty.name === property.name;
                                 }))[ 0 ]?.value,
                                 index
                             )
-                        )
+                        );
                     }
                 })
             }
@@ -133,11 +133,11 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
+                                    return userStoreProperty.name === property.name;
                                 }))[ 0 ]?.value,
                                 index
                             )
-                        )
+                        );
                     }
                 })
             }
@@ -151,11 +151,11 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
+                                    return userStoreProperty.name === property.name;
                                 }))[ 0 ]?.value,
                                 index
                             )
-                        )
+                        );
                     }
                 })
             }
@@ -163,21 +163,22 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
             <Divider horizontal>{ t("adminPortal:components.userstores.wizard.steps.group") }</Divider>
 
             {
-                groupProperties?.map((property: TypeProperty) => {
+                groupProperties?.map((property: TypeProperty, index: number) => {
                     if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
-                                }))[ 0 ]?.value
+                                    return userStoreProperty.name === property.name;
+                                }))[ 0 ]?.value,
+                                index
                             )
-                        )
+                        );
                     }
                 })
             }
         </Grid>
-    )
+    );
 };
 
 /**
