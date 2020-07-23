@@ -343,3 +343,95 @@ export const retrieveFilePath = (): Promise<any> => {
             );
         });
 };
+
+/**
+ * List remote userstores.
+ *
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
+export const listRemoteUserstores = (): Promise<any> => {
+    /* const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.remoteUserstoreAgentManagement}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    "An error occurred while retrieving the agents",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return Promise.resolve(response?.data);
+        })
+        .catch((error) => {
+            throw new IdentityAppsApiException(
+                "An error occurred while retrieving the agents",
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
+            );
+        }); */
+    return Promise.resolve(JSON.parse(localStorage.getItem("remoteUserstore")));
+};
+
+/**
+ * Retrieve a remote userstore.
+ *
+ * @param {string} domain Userstore domain.
+ *
+ * @return {Promise<any>} A promise that resolves with the returned data.
+ */
+export const retrieveRemoteUserstore = (domain: string): Promise<any> => {
+    /* const requestConfig = {
+        headers: {
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.remoteUserstoreAgentManagement}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    "An error occurred while retrieving the agents",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config
+                );
+            }
+
+            return Promise.resolve(response?.data);
+        })
+        .catch((error) => {
+            throw new IdentityAppsApiException(
+                "An error occurred while retrieving the agents",
+                error?.stack,
+                error?.code,
+                error?.request,
+                error?.response,
+                error?.config
+            );
+        }); */
+    return Promise.resolve(
+        JSON.parse(localStorage.getItem("remoteUserstore")).find((remote) => remote.domain === domain)
+    );
+};
