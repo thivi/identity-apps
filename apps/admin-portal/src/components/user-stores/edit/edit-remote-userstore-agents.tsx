@@ -16,13 +16,14 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState, useCallback } from "react";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { AccessTokenPostBody, ConnectedAgent } from "../../../models";
-import { Grid, Message, Divider, Button, Icon, Segment, List } from "semantic-ui-react";
-import { retrieveFilePath, listAgents } from "../../../api";
-import { CopyInputField, Hint, EmptyPlaceholder } from "@wso2is/react-components";
+import { EmptyPlaceholder } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button, Divider, Grid, Icon, List, Message, Segment } from "semantic-ui-react";
+import { listAgents, retrieveFilePath } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
+import { AccessTokenPostBody, ConnectedAgent } from "../../../models";
 
 interface EditRemoteUserstoreAgentsPropsInterface extends TestableComponentInterface {
     userstoreData: AccessTokenPostBody;
@@ -37,6 +38,8 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
     const [ errorMessage, setErrorMessage ] = useState("");
     const [ errorDescription, setErrorDescription ] = useState("");
 
+    const { t } = useTranslation();
+
     /**
      * Fetches the list of connected agents.
      */
@@ -48,10 +51,15 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
                 setErrorMessage("");
             })
             .catch((error) => {
-                setErrorMessage(error?.response?.message);
-                setErrorDescription(error?.response?.description ?? error?.message);
+                setErrorMessage(error?.response?.message
+                    ?? t("adminPortal:components.userstores.notifications.fetchAgents.genericError" +
+                        ".message"));
+                setErrorDescription(error?.response?.description
+                    ?? error?.message
+                    ?? t("adminPortal:components.userstores.notifications.fetchAgents.genericError" +
+                        ".description"));
             });
-    }, [ userstoreData ]);
+    }, [ userstoreData, t ]);
 
     useEffect(() => {
         retrieveFilePath().then((response) => {
@@ -66,8 +74,7 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } computer={ 8 }>
                     <Message info>
-                        Download the onprem userstore agent and run it. Once the agent successfully establishes a
-                        connection with our servers, you will be able to find it in the list below.
+                        { t("adminPortal:components.userstores.remoteUserstores.downloadAgentInstruction") }
                     </Message>
                 </Grid.Column>
             </Grid.Row>
@@ -76,7 +83,8 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
                 <Grid.Column textAlign="center" mobile={ 16 } computer={ 8 }>
                     <Button size="large" as="a" href={ filePath } download="wso2agent.zip">
                         <Icon name="download" />
-                        <span>Download wso2agent.zip</span>
+                        <span>{ t("adminPortal:components.userstores.remoteUserstores.downloadAgentButton",
+                            { fileName: "wso2agent.zip" }) }</span>
                     </Button>
                 </Grid.Column>
             </Grid.Row>
@@ -85,10 +93,10 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
 
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } computer={ 8 }>
-                    <h4>Connected Agents</h4>
+                    <h4>{ t("adminPortal:components.userstores.remoteUserstores.connectedAgents") }</h4>
                     <Segment>
                         { connectedAgents.length > 0 ? (
-                            <List data-testid={ `${testId}-agent-list` }>
+                            <List data-testid={ `${ testId }-agent-list` }>
                                 { connectedAgents.map((agent: ConnectedAgent, index: number) => {
                                     return (
                                         <List.Item key={ index }>
@@ -102,11 +110,12 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
                             </List>
                         ) : (
                                 <EmptyPlaceholder
-                                    subtitle={ [ "Download the agent and run it to connect to our servers." ] }
-                                    title="No agent is connected"
+                                    subtitle={ [ t("adminPortal:components.userstores.placeholders" +
+                                        + ".emptyAgents.subtitles") ] }
+                                    title={ t("adminPortal:components.userstores.placeholders.emptyAgents.title") }
                                     image={ EmptyPlaceholderIllustrations.newList }
                                     imageSize="tiny"
-                                    data-testid={ `${testId}-empty-agent-list` }
+                                    data-testid={ `${ testId }-empty-agent-list` }
                                 />
                             ) }
                     </Segment>
@@ -116,9 +125,9 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
                             <Message.Content>{ errorDescription }</Message.Content>
                         </Message>
                     ) }
-                    <Button onClick={ getListOfConnectedAgents } data-testid={ `${testId}-refresh-list` }>
+                    <Button onClick={ getListOfConnectedAgents } data-testid={ `${ testId }-refresh-list` }>
                         <Icon name="refresh" />
-                        Refresh list
+                        { t("adminPortal:components.userstores.remoteUserstores.refreshList") }
                     </Button>
                 </Grid.Column>
             </Grid.Row>
