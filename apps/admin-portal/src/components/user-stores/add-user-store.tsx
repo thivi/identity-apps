@@ -164,14 +164,16 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
     const completeAddingRemoteUserstore = (): void => {
 
-        localStorage.setItem(
-            "remoteUserstore",
-            JSON.stringify(
-                localStorage.getItem("remoteUserstore")
-                    ? JSON.parse(localStorage.getItem("remoteUserstore")).push(generalStepRemoteData)
-                    : [ generalStepRemoteData ]
-            )
-        );
+        let data;
+        if (localStorage.getItem("remoteUserstore")) {
+            const old = JSON.parse(localStorage.getItem("remoteUserstore"));
+            old.push(generalStepRemoteData);
+            data = old;
+        } else {
+            data = [ generalStepRemoteData ];
+        }
+
+        localStorage.setItem("remoteUserstore", JSON.stringify(data));
         onClose();
         history.push(AppConstants.PATHS.get("USERSTORES"));
     };
@@ -389,7 +391,11 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next } data-testid={ `${ testId }-next-button` }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ next }
+                                    data-testid={ `${ testId }-next-button` }
+                                >
                                     { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }

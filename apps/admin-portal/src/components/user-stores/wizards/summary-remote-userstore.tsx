@@ -75,7 +75,7 @@ export const SummaryRemoteUserstore: FunctionComponent<SummaryRemoteUserstorePro
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                     <div className="label">
-                        { t("adminPortal:components.userstores.remoteUserstores.connectedAgents") }
+                        { t("adminPortal:components.userstores.remoteUserstore.connectedAgents") }
                     </div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">

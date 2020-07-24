@@ -74,7 +74,7 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } computer={ 8 }>
                     <Message info>
-                        { t("adminPortal:components.userstores.remoteUserstores.downloadAgentInstruction") }
+                        { t("adminPortal:components.userstores.remoteUserstore.downloadAgentInstruction") }
                     </Message>
                 </Grid.Column>
             </Grid.Row>
@@ -83,7 +83,7 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
                 <Grid.Column textAlign="center" mobile={ 16 } computer={ 8 }>
                     <Button size="large" as="a" href={ filePath } download="wso2agent.zip">
                         <Icon name="download" />
-                        <span>{ t("adminPortal:components.userstores.remoteUserstores.downloadAgentButton",
+                        <span>{ t("adminPortal:components.userstores.remoteUserstore.downloadAgentButton",
                             { fileName: "wso2agent.zip" }) }</span>
                     </Button>
                 </Grid.Column>
@@ -93,7 +93,7 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
 
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } computer={ 8 }>
-                    <h4>{ t("adminPortal:components.userstores.remoteUserstores.connectedAgents") }</h4>
+                    <h4>{ t("adminPortal:components.userstores.remoteUserstore.connectedAgents") }</h4>
                     <Segment>
                         { connectedAgents.length > 0 ? (
                             <List data-testid={ `${ testId }-agent-list` }>
@@ -127,7 +127,7 @@ export const EditRemoteUserstoreAgents: FunctionComponent<EditRemoteUserstoreAge
                     ) }
                     <Button onClick={ getListOfConnectedAgents } data-testid={ `${ testId }-refresh-list` }>
                         <Icon name="refresh" />
-                        { t("adminPortal:components.userstores.remoteUserstores.refreshList") }
+                        { t("adminPortal:components.userstores.remoteUserstore.refreshList") }
                     </Button>
                 </Grid.Column>
             </Grid.Row>

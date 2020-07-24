@@ -2306,7 +2306,7 @@ export const adminPortal: AdminPortalNS = {
                     }
                 },
                 remoteUserstore: {
-                    changeSecret: "Change Userstore Secret",
+                    changeSecret: "Change Secret",
                     copied: "Copied!",
                     copy: "Copy Userstore Secret",
                     domainName: {

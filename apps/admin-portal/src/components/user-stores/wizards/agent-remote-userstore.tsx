@@ -73,7 +73,7 @@ export const AgentRemoteUserstore: FunctionComponent<AgentRemoteUserstorePropsIn
             <Grid.Row columns={ 1 }>
                 <Grid.Column>
                     <Message info>
-                        { t("adminPortal:components.userstores.remoteUserstores.downloadAgentInstruction") }
+                        { t("adminPortal:components.userstores.remoteUserstore.downloadAgentInstruction") }
                     </Message>
                 </Grid.Column>
             </Grid.Row>
@@ -82,7 +82,7 @@ export const AgentRemoteUserstore: FunctionComponent<AgentRemoteUserstorePropsIn
                 <Grid.Column textAlign="center">
                     <Button size="large" as="a" href={ filePath } download="wso2agent.zip">
                         <Icon name="download" />
-                        <span>{ t("adminPortal:components.userstores.remoteUserstores.downloadAgentButton",
+                        <span>{ t("adminPortal:components.userstores.remoteUserstore.downloadAgentButton",
                             { fileName: "wso2agent.zip" }) }</span>
                     </Button>
                 </Grid.Column>
@@ -97,12 +97,12 @@ export const AgentRemoteUserstore: FunctionComponent<AgentRemoteUserstorePropsIn
                         hideSecretText="Hide secret"
                         secret={ true }
                     />
-                    <Hint>{ t("adminPortal:components.userstores.remoteUserstores.hint") }</Hint>
+                    <Hint>{ t("adminPortal:components.userstores.remoteUserstore.hint") }</Hint>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
                 <Grid.Column>
-                    <h4>{ t("adminPortal:components.userstores.remoteUserstores.connectedAgents") }</h4>
+                    <h4>{ t("adminPortal:components.userstores.remoteUserstore.connectedAgents") }</h4>
                     <Segment>
                         { connectedAgents.length > 0 ? (
                             <List data-testid={ `${ testId }-agent-list` }>
@@ -136,7 +136,7 @@ export const AgentRemoteUserstore: FunctionComponent<AgentRemoteUserstorePropsIn
                     ) }
                     <Button onClick={ getListOfConnectedAgents } data-testid={ `${ testId }-refresh-list` }>
                         <Icon name="refresh" />
-                        { t("adminPortal:components.userstores.remoteUserstores.refreshList") }
+                        { t("adminPortal:components.userstores.remoteUserstore.refreshList") }
                     </Button>
                 </Grid.Column>
             </Grid.Row>
