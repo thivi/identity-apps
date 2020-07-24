@@ -137,7 +137,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 <p>
                     <Trans i18nKey="adminPortal:components.userstores.confirmation.hint">
                         Please type
-                        <strong data-testid={ `${testId}-delete-confirmation-modal-assertion` }>
+                        <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
                             { { name: deleteName } }
                         </strong > to confirm.
                     </Trans>
@@ -153,19 +153,21 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                         .then(() => {
                             dispatch(addAlert({
                                 description: t("adminPortal:components.userstores.notifications." +
-                                    "deleteUserstore.success.description"),
+                                    "deleteRemoteUserstore.success.description"),
                                 level: AlertLevels.SUCCESS,
                                 message: t("adminPortal:components.userstores.notifications." +
-                                    "deleteUserstore.success.message")
+                                    "deleteRemoteUserstore.success.message")
 
                             }));
-                            dispatch(addAlert({
+
+                            /* dispatch(addAlert({
                                 description: t("adminPortal:components.userstores.notifications." +
                                     "delay.description"),
                                 level: AlertLevels.WARNING,
                                 message: t("adminPortal:components.userstores.notifications." +
                                     "delay.message")
-                            }));
+                            })); */
+
                             update();
                         })
                         .catch(error => {
@@ -216,22 +218,22 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                         });
                 }
             } }
-            data-testid={ `${testId}-delete-confirmation-modal` }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
         >
             <ConfirmationModal.Header
-                data-testid={ `${testId}-delete-confirmation-modal-header` }
+                data-testid={ `${ testId }-delete-confirmation-modal-header` }
             >
                 { t("adminPortal:components.userstores.confirmation.header") }
             </ConfirmationModal.Header>
             <ConfirmationModal.Message
                 attached
                 warning
-                data-testid={ `${testId}-delete-confirmation-modal-message` }
+                data-testid={ `${ testId }-delete-confirmation-modal-message` }
             >
                 { t("adminPortal:components.userstores.confirmation.message") }
             </ConfirmationModal.Message>
             <ConfirmationModal.Content
-                data-testid={ `${testId}-delete-confirmation-modal-content` }
+                data-testid={ `${ testId }-delete-confirmation-modal-content` }
             >
                 { t("adminPortal:components.userstores.confirmation.content") }
             </ConfirmationModal.Content>
@@ -262,7 +264,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                 searchQuery: searchQuery
                             })
                     ] }
-                    data-testid={ `${testId}-empty-search-placeholder` }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -282,7 +284,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     subtitle={ [
                         t("adminPortal:components.userstores.placeholders.emptyList.subtitles")
                     ] }
-                    data-testid={ `${testId}-empty-placeholder` }
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -312,7 +314,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                         rounded
                                         centered
                                         size="mini"
-                                        data-testid={ `${testId}-item-image` }
+                                        data-testid={ `${ testId }-item-image` }
                                     >
                                         <DatabaseAvatarGraphic />
                                     </Image>
@@ -346,7 +348,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                 actionsFloated="right"
                                 itemHeader={ userStore.name }
                                 itemDescription={ userStore.description }
-                                data-testid={ `${testId}-item` }
+                                data-testid={ `${ testId }-item` }
                             />
                         ))
                         : showPlaceholders()
