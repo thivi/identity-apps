@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { generate } from "generate-password";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid, Message } from "semantic-ui-react";
 import { createToken } from "../../../api";
 import { AccessTokenPostBody } from "../../../models";
@@ -73,6 +74,8 @@ export const GeneralRemoteUserstore: FunctionComponent<GeneralRemoteUserstorePro
     const [ error, setError ] = useState<string>("");
     const [ errorMessage, setErrorMessage ] = useState<string>("");
 
+    const { t } = useTranslation();
+
     return (
         <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
@@ -87,8 +90,10 @@ export const GeneralRemoteUserstore: FunctionComponent<GeneralRemoteUserstorePro
                         setErrorMessage("");
                     })
                     .catch((error) => {
-                        setError(error?.response?.data?.description ?? error?.message);
-                        setErrorMessage(error?.response?.data?.message ?? "");
+                        setError(error?.response?.data?.description ?? error?.message ?? t("adminPortal:components" +
+                            ".userstores.notifications.changeSecretUserstore.genericError.description"));
+                        setErrorMessage(error?.response?.data?.message ?? t("adminPortal:components.userstores." +
+                            "notifications.changeSecretUserstore.genericError.message"));
                     }); */
                 onSubmit(data);
             } }
@@ -100,10 +105,13 @@ export const GeneralRemoteUserstore: FunctionComponent<GeneralRemoteUserstorePro
                         <Field
                             type="text"
                             required={ true }
-                            requiredErrorMessage="Required"
-                            placeholder="Enter a userstore domain name"
-                            label="Userstore domain name"
-                            data-testid={ `${testId}-userstore-domain-name` }
+                            requiredErrorMessage={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.domainName.requiredErrorMessage") }
+                            placeholder={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.domainName.placeholder") }
+                            label={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.domainName.label") }
+                            data-testid={ `${ testId }-userstore-domain-name` }
                             name={ USERSTORE_DOMAIN }
                         />
                     </Grid.Column>
@@ -113,13 +121,18 @@ export const GeneralRemoteUserstore: FunctionComponent<GeneralRemoteUserstorePro
                         <Field
                             type="password"
                             required={ true }
-                            requiredErrorMessage="Required"
-                            placeholder="Enter a userstore secret"
-                            label="Userstore secret"
-                            data-testid={ `${testId}-userstore-secret` }
+                            requiredErrorMessage={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.secret.requiredErrorMessage") }
+                            placeholder={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.secret.placeholder") }
+                            label={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.secret.label") }
+                            data-testid={ `${ testId }-userstore-secret` }
                             name={ USERSTORE_SECRET }
-                            showPassword="Show secret"
-                            hidePassword="Hide secret"
+                            showPassword={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.showSecret") }
+                            hidePassword={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.hideSecret") }
                             value={ secret }
                         />
                     </Grid.Column>
@@ -130,16 +143,17 @@ export const GeneralRemoteUserstore: FunctionComponent<GeneralRemoteUserstorePro
                                 setSecret(generate({ length: 10, numbers: true }));
                             } }
                             className="generate-password-button"
-                            data-testid={ `${testId}-generate-secret` }
+                            data-testid={ `${ testId }-generate-secret` }
                         >
-                            Generate Secret
+                            { t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.generateSecret") }
                         </Button>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column>
                         { (error || errorMessage) && (
-                            <Message data-testid={ `${testId}-error-message` } negative>
+                            <Message data-testid={ `${ testId }-error-message` } negative>
                                 { errorMessage && <Message.Header>{ errorMessage }</Message.Header> }
                                 { error }
                             </Message>
