@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, EmptyPlaceholder } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid, List, Segment } from "semantic-ui-react";
 import { listAgents } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
@@ -32,7 +33,10 @@ export const SummaryRemoteUserstore: FunctionComponent<SummaryRemoteUserstorePro
     props: SummaryRemoteUserstorePropsInterface
 ): ReactElement => {
     const { userstoreData, [ "data-testid" ]: testId } = props;
+
     const [ connectedAgents, setConnectedAgents ] = useState<ConnectedAgent[]>([]);
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         listAgents(userstoreData.domain).then((response: ConnectedAgent[]) => {
@@ -45,21 +49,24 @@ export const SummaryRemoteUserstore: FunctionComponent<SummaryRemoteUserstorePro
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
-                        <h3 data-testid={ `${testId}-userstore-domain` }>{ userstoreData?.domain }</h3>
+                        <h3 data-testid={ `${ testId }-userstore-domain` }>{ userstoreData?.domain }</h3>
                     </div>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row className="summary-field" columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">Userstore Secret</div>
+                    <div className="label">{ t("adminPortal:components.userstores.forms." +
+                        "remoteUserstore.secret.label") }</div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     <div className="value">
                         <CopyInputField
-                            data-testid={ `${testId}-userstore-secret` }
+                            data-testid={ `${ testId }-userstore-secret` }
                             value={ userstoreData?.token }
-                            showSecretText="Show secret"
-                            hideSecretText="Hide secret"
+                            showSecretText={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.showSecret") }
+                            hideSecretText={ t("adminPortal:components.userstores.forms." +
+                                "remoteUserstore.hideSecret") }
                             secret={ true }
                         />
                     </div>
@@ -67,11 +74,13 @@ export const SummaryRemoteUserstore: FunctionComponent<SummaryRemoteUserstorePro
             </Grid.Row>
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                    <div className="label">Connected Agents</div>
+                    <div className="label">
+                        { t("adminPortal:components.userstores.remoteUserstores.connectedAgents") }
+                    </div>
                 </Grid.Column>
                 <Grid.Column className="overflow-wrap" mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                     { connectedAgents.length > 0 ? (
-                        <List data-testid={ `${testId}-agent-list` }>
+                        <List data-testid={ `${ testId }-agent-list` }>
                             { connectedAgents.map((agent: ConnectedAgent, index: number) => {
                                 return (
                                     <List.Item key={ index }>
@@ -87,10 +96,10 @@ export const SummaryRemoteUserstore: FunctionComponent<SummaryRemoteUserstorePro
                             <Segment placeholder>
                                 <EmptyPlaceholder
                                     subtitle={ null }
-                                    title="No agent is connected"
+                                    title={ t("adminPortal:components.userstores.placeholders.emptyAgents.title") }
                                     image={ EmptyPlaceholderIllustrations.newList }
                                     imageSize="tiny"
-                                    data-testid={ `${testId}-empty-agent-list` }
+                                    data-testid={ `${ testId }-empty-agent-list` }
                                 />
                             </Segment>
                         ) }
