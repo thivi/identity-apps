@@ -71,7 +71,7 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                 <p>
                     <Trans i18nKey="adminPortal:components.userstores.confirmation.hint">
                         Please type
-                        <strong data-testid={ `${testId}-delete-confirmation-modal-assertion` }>
+                        <strong data-testid={ `${ testId }-delete-confirmation-modal-assertion` }>
                             { { name: userstoreData?.domain } }
                         </strong>{ " " }
                         to confirm.
@@ -89,15 +89,16 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                             addAlert({
                                 description: t(
                                     "adminPortal:components.userstores.notifications." +
-                                    "deleteUserstore.success.description"
+                                    "deleteRemoteUserstore.success.description"
                                 ),
                                 level: AlertLevels.SUCCESS,
                                 message: t(
                                     "adminPortal:components.userstores.notifications." +
-                                    "deleteUserstore.success.message"
+                                    "deleteRemoteUserstore.success.message"
                                 )
                             })
                         );
+                        /*
                         dispatch(
                             addAlert({
                                 description: t(
@@ -106,7 +107,7 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                 level: AlertLevels.WARNING,
                                 message: t("adminPortal:components.userstores.notifications." + "delay.message")
                             })
-                        );
+                        ); */
                         onUpdate();
                     })
                     .catch((error) => {
@@ -116,14 +117,14 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                     error?.description ??
                                     t(
                                         "adminPortal:components.userstores.notifications." +
-                                        "deleteUserstore.genericError.description"
+                                        "deleteRemoteUserstore.genericError.description"
                                     ),
                                 level: AlertLevels.ERROR,
                                 message:
                                     error?.message ??
                                     t(
                                         "adminPortal:components.userstores.notifications." +
-                                        "deleteUserstore.genericError.message"
+                                        "deleteRemoteUserstore.genericError.message"
                                     )
                             })
                         );
@@ -132,15 +133,15 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                         setConfirmDelete(false);
                     });
             } }
-            data-testid={ `${testId}-delete-confirmation-modal` }
+            data-testid={ `${ testId }-delete-confirmation-modal` }
         >
-            <ConfirmationModal.Header data-testid={ `${testId}-delete-confirmation-modal-header` }>
+            <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
                 { t("adminPortal:components.userstores.confirmation.header") }
             </ConfirmationModal.Header>
-            <ConfirmationModal.Message attached warning data-testid={ `${testId}-delete-confirmation-modal-message` }>
+            <ConfirmationModal.Message attached warning data-testid={ `${ testId }-delete-confirmation-modal-message` }>
                 { t("adminPortal:components.userstores.confirmation.message") }
             </ConfirmationModal.Message>
-            <ConfirmationModal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
+            <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
                 { t("adminPortal:components.userstores.confirmation.content") }
             </ConfirmationModal.Content>
         </ConfirmationModal>
@@ -157,7 +158,7 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                 type="text"
                                 value={ userstoreData?.domain }
                                 label="Userstore Domain"
-                                data-testid={ `${testId}-userstore-domain` }
+                                data-testid={ `${ testId }-userstore-domain` }
                                 disabled
                             />
                         </Form>
@@ -180,9 +181,15 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                                         .then(() => {
                                                             dispatch(
                                                                 addAlert({
-                                                                    description: "Added successfully",
+                                                                    description: t(
+                                                                        "adminPortal:components.userstores." +
+                                                                        "notifications.changeSecret.success.description"
+                                                                    ),
                                                                     level: AlertLevels.SUCCESS,
-                                                                    message: "Success"
+                                                                    message: t(
+                                                                        "adminPortal:components.userstores." +
+                                                                        "notifications.changeSecret.success.message"
+                                                                    )
                                                                 })
                                                             );
 
@@ -193,11 +200,19 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                                                 addAlert({
                                                                     description:
                                                                         error?.response?.description ??
-                                                                        "An error occurred",
+                                                                        t(
+                                                                            "adminPortal:components.userstores" +
+                                                                            ".notifications.changeSecret." +
+                                                                            "genericError.description"
+                                                                        ),
                                                                     level: AlertLevels.ERROR,
                                                                     message:
                                                                         error?.response?.message ??
-                                                                        "Something went wrong"
+                                                                        t(
+                                                                            "adminPortal:components.userstores" +
+                                                                            ".notifications.changeSecret." +
+                                                                            "genericError.message"
+                                                                        )
                                                                 })
                                                             );
                                                         });
@@ -205,14 +220,19 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                             >
                                                 <Field
                                                     type="password"
-                                                    label="New Secret"
-                                                    placeholder="Enter the new secret"
+                                                    label={ t("adminPortal:components.userstores.forms." +
+                                                        "remoteUserstore.newSecret.label") }
+                                                    placeholder={ t("adminPortal:components.userstores.forms." +
+                                                        "remoteUserstore.newSecret.placeholder") }
                                                     name={ NEW_SECRET }
-                                                    data-testid={ `${testId}-userstore-new-secret` }
-                                                    requiredErrorMessage="Required"
+                                                    data-testid={ `${ testId }-userstore-new-secret` }
+                                                    requiredErrorMessage={ t("adminPortal:components.userstores" +
+                                                        ".forms.remoteUserstore.newSecret.requiredErrorMessage") }
                                                     required={ true }
-                                                    showPassword="Show Secret"
-                                                    hidePassword="Hide Secret"
+                                                    showPassword={ t("adminPortal:components.userstores.forms." +
+                                                        "remoteUserstore.showSecret") }
+                                                    hidePassword={ t("adminPortal:components.userstores.forms." +
+                                                        "remoteUserstore.hideSecret") }
                                                     value={ secret }
                                                 />
                                                 <Grid>
@@ -223,21 +243,24 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                                                     setSecret(generate({ length: 10, numbers: true }));
                                                                 } }
                                                             >
-                                                                Generate Secret
+                                                                { t("adminPortal:components.userstores.forms." +
+                                                                    "remoteUserstore.generateSecret") }
                                                             </Button>
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                 </Grid>
                                                 <Divider hidden />
                                                 <Form.Group grouped>
-                                                    <PrimaryButton type="submit">Change Secret</PrimaryButton>
+                                                    <PrimaryButton type="submit">{ t("adminPortal:components." +
+                                                        "userstores.forms.remoteUserstore.changeSecret") }
+                                                    </PrimaryButton>
                                                     <LinkButton
                                                         type="button"
                                                         onClick={ () => {
                                                             setChangeSecret(false);
                                                         } }
                                                     >
-                                                        Cancel
+                                                        { t("common:cancel") }
                                                     </LinkButton>
                                                 </Form.Group>
                                             </Forms>
@@ -249,13 +272,16 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                         <Grid.Column width={ 10 }>
                                             <Form>
                                                 <Form.Field>
-                                                    <label>Userstore Secret</label>
+                                                    <label>{ t("adminPortal:components.userstores.forms." +
+                                                        "remoteUserstore.secret.label") }</label>
                                                     <CopyInputField
                                                         value={ userstoreData?.token }
                                                         secret={ true }
-                                                        showSecretText="Show secret"
-                                                        hideSecretText="Hide secret"
-                                                        data-testid={ `${testId}-userstore-token` }
+                                                        showSecretText={ t("adminPortal:components.userstores.forms." +
+                                                            "remoteUserstore.showSecret") }
+                                                        hideSecretText={ t("adminPortal:components.userstores.forms." +
+                                                            "remoteUserstore.hideSecret") }
+                                                        data-testid={ `${ testId }-userstore-token` }
                                                     />
                                                 </Form.Field>
                                             </Form>
@@ -266,8 +292,9 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                                                     setChangeSecret(true);
                                                 } }
                                             >
-                                                Change Secret
-                                        </LinkButton>
+                                                { t("adminPortal:components.userstores.forms." +
+                                                    "remoteUserstore.changeSecret") }
+                                            </LinkButton>
                                         </Grid.Column>
                                     </Grid.Row>
                                 ) }
@@ -283,14 +310,14 @@ export const EditRemoteUserstoreGeneral: FunctionComponent<EditRemoteUserstoreGe
                 <Grid.Column width={ 16 }>
                     <DangerZoneGroup
                         sectionHeader={ t("common:dangerZone") }
-                        data-testid={ `${testId}-danger-zone-group` }
+                        data-testid={ `${ testId }-danger-zone-group` }
                     >
                         <DangerZone
                             actionTitle={ t("adminPortal:components.userstores.dangerZone.actionTitle") }
                             header={ t("adminPortal:components.userstores.dangerZone.header") }
                             subheader={ t("adminPortal:components.userstores.dangerZone.subheader") }
                             onActionClick={ () => setConfirmDelete(true) }
-                            data-testid={ `${testId}-delete-danger-zone` }
+                            data-testid={ `${ testId }-delete-danger-zone` }
                         />
                     </DangerZoneGroup>
                 </Grid.Column>
