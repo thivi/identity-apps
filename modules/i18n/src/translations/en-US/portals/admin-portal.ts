@@ -2304,6 +2304,29 @@ export const adminPortal: AdminPortalNS = {
                         label: "Type",
                         requiredErrorMessage: "Select a Type"
                     }
+                },
+                remoteUserstore: {
+                    changeSecret: "Change Userstore Secret",
+                    copied: "Copied!",
+                    copy: "Copy Userstore Secret",
+                    domainName: {
+                        label: "Userstore Name",
+                        placeholder: "Enter a userstore name",
+                        requiredErrorMessage:"USerstore name is required."
+                    },
+                    generateSecret: "Generate Secret",
+                    hideSecret: "Hide Secret",
+                    newSecret: {
+                        label: "New a new userstore secret",
+                        placeholder: "Enter a new userstore secret",
+                        requiredErrorMessage: "New userstore secret is required."
+                    },
+                    secret: {
+                        label: "Userstore Secret",
+                        placeholder: "Enter a userstore secret",
+                        requiredErrorMessage: "Userstore secret is required."
+                    },
+                    showSecret: "Show Secret"
                 }
             },
             notifications: {
@@ -2317,10 +2340,30 @@ export const adminPortal: AdminPortalNS = {
                         message: "Userstore added successfully!"
                     }
                 },
+                changeSecretUserstore: {
+                    genericError: {
+                        description: "An error occurred while changing the userstore secret.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The userstore secret has been successfully changed.",
+                        message: "Userstore secret changed successfully"
+                    }
+                },
                 delay: {
                     description: "It may take a while for the userstore list to be updated. "
                         + "Refresh in a few seconds to get the updated userstore list.",
                     message: "Updating Userstore list takes time"
+                },
+                deleteRemoteUserstore: {
+                    genericError: {
+                        description: "An error occurred while deleting the remote userstore.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "The remote userstore has been successfully deleted.",
+                        message: "Remote userstore deleted successfully"
+                    }
                 },
                 deleteUserstore: {
                     genericError: {
@@ -2330,6 +2373,24 @@ export const adminPortal: AdminPortalNS = {
                     success: {
                         description: "The userstore has been deleted successfully!",
                         message: "Userstore deleted successfully!"
+                    }
+                },
+                fetchARemoteUserstore: {
+                    genericError: {
+                        description: "An error occurred while fetching the remote userstore.",
+                        message: "Something went wrong"
+                    }
+                },
+                fetchAgents: {
+                    genericError: {
+                        description: "An error occurred while fetching the connected agents.",
+                        message: "Something went wrong"
+                    }
+                },
+                fetchRemoteUserstores: {
+                    genericError: {
+                        description: "An error occurred while fetching the remote userstores.",
+                        message: "Something went wrong"
                     }
                 },
                 fetchUserstoreMetadata: {
@@ -2382,6 +2443,7 @@ export const adminPortal: AdminPortalNS = {
                     back: "Go back to userstores",
                     description: "Edit userstore",
                     tabs: {
+                        agents: "Agents",
                         connection: "Connection",
                         general: "General",
                         group: "Group",
@@ -2402,11 +2464,17 @@ export const adminPortal: AdminPortalNS = {
                 }
             },
             placeholders: {
+                emptyAgents: {
+                    action: "",
+                    subtitles: "Download the agent and run it to connect to our servers.",
+                    title: "No agent is connected"
+                },
                 emptyList: {
                     action: "New Userstore",
                     subtitles: "There are currently no userstores available."
                         + "You can add a new userstore easily by following the"
-                        + "steps in the userstore creation wizard." + "Please try a different search term.",
+                        + "steps in the userstore creation wizard."
+                        + "Please try a different search term.",
                     title: "Add a new Userstore"
                 },
                 emptySearch: {
@@ -2415,6 +2483,15 @@ export const adminPortal: AdminPortalNS = {
                         + "Please try a different search term.",
                     title: "No results found"
                 }
+            },
+            remoteUserstore: {
+                connectedAgents: "Connected Agents",
+                downloadAgentButton: "Download {{fileName}}",
+                downloadAgentInstruction: "Download the onprem userstore agent and run it. Once the agent "
+                    + "successfully establishes a connection with our servers, you will be able to find it "
+                    + "in the list below.",
+                hint: "Copy the userstore secret and provide it to the agent during startup.",
+                refreshList: "Refresh List"
             },
             sqlEditor: {
                 create: "Create",
@@ -2428,6 +2505,7 @@ export const adminPortal: AdminPortalNS = {
             wizard: {
                 header: "Add {{type}} Userstore",
                 steps: {
+                    agents: "Agents",
                     general: "General",
                     group: "Group",
                     summary: "Summary",
