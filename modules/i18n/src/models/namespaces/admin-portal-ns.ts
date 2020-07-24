@@ -18,7 +18,8 @@
 
 import {
     Confirmation,
-    DangerZone, EditPage,
+    DangerZone,
+    EditPage,
     FormAttributes,
     FormField,
     Notification,
@@ -832,7 +833,7 @@ export interface AdminPortalNS {
                             group: string;
                         };
                         permissions: string;
-                        roleName:  string;
+                        roleName: string;
                         users: string;
                     };
                 };
@@ -1407,6 +1408,11 @@ export interface AdminPortalNS {
                 updateUserstore: Notification;
                 testConnection: Notification;
                 addUserstore: Notification;
+                fetchRemoteUserstores: Notification;
+                deleteRemoteUserstore: Notification;
+                changeSecretUserstore: Notification;
+                fetchAgents: Notification;
+                fetchARemoteUserstore: Notification;
             };
             confirmation: {
                 hint: string;
@@ -1436,8 +1442,16 @@ export interface AdminPortalNS {
                         connection: string;
                         user: string;
                         group: string;
+                        agents: string;
                     };
                 };
+            };
+            remoteUserstore: {
+                downloadAgentInstruction: string;
+                downloadAgentButton: string;
+                connectedAgents: string;
+                refreshList: string;
+                hint: string;
             };
             forms: {
                 general: {
@@ -1449,6 +1463,17 @@ export interface AdminPortalNS {
                     testButton: string;
                     connectionErrorMessage: string;
                 };
+                remoteUserstore: {
+                    newSecret: FormField;
+                    secret: FormField;
+                    domainName: FormField;
+                    changeSecret: string;
+                    generateSecret: string;
+                    showSecret: string;
+                    hideSecret: string;
+                    copy: string;
+                    copied: string;
+                };
                 custom: FormField;
             };
             dangerZone: DangerZone;
@@ -1458,12 +1483,14 @@ export interface AdminPortalNS {
                     user: string;
                     group: string;
                     summary: string;
+                    agents: string;
                 };
                 header: string;
             };
             placeholders: {
                 emptySearch: Placeholder;
                 emptyList: Placeholder;
+                emptyAgents: Placeholder;
             };
             sqlEditor: {
                 reset: string;
