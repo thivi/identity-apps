@@ -19,19 +19,19 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout, ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState, useCallback } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Image } from "semantic-ui-react";
-import { getAType, getAUserStore, retrieveRemoteUserstore, getUserStores } from "../../api";
+import { getAType, getAUserStore, retrieveRemoteUserstore } from "../../api";
 import {
     EditBasicDetailsUserStore,
     EditConnectionDetails,
     EditGroupDetails,
-    EditUserDetails,
+    EditRemoteUserstoreAgents,
     EditRemoteUserstoreGeneral,
-    EditRemoteUserstoreAgents
+    EditUserDetails
 } from "../../components";
 import { DatabaseAvatarGraphic } from "../../configs";
 import { history } from "../../helpers";
@@ -83,6 +83,22 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             if (id) {
                 retrieveRemoteUserstore(id).then((response: AccessTokenPostBody) => {
                     setRemoteUserstore(response);
+                }).catch(error => {
+                    addAlert({
+                        description:
+                            error?.description ||
+                            t(
+                                "adminPortal:components.userstores.notifications.fetchARemoteUserstore.genericError" +
+                                ".description"
+                            ),
+                        level: AlertLevels.ERROR,
+                        message:
+                            error?.message ||
+                            t(
+                                "adminPortal:components.userstores.notifications.fetchARemoteUserstore." +
+                                "genericError.message"
+                            )
+                    });
                 });
             } else {
                 getAUserStore(userStoreId)
@@ -180,7 +196,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                 )
             },
             {
-                menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.general"),
+                menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.agents"),
                 render: () => (
                     <EditRemoteUserstoreAgents
                         userstoreData={ remoteUserstore }
@@ -197,7 +213,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                         userStore={ userStore }
                         update={ getUserStore }
                         id={ userStoreId }
-                        data-testid={ `${testId}-userstore-basic-details-edit` }
+                        data-testid={ `${ testId }-userstore-basic-details-edit` }
                     />
                 )
             },
@@ -209,7 +225,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                         type={ type }
                         id={ userStoreId }
                         properties={ properties?.connection }
-                        data-testid={ `${testId}-userstore-connection-details-edit` }
+                        data-testid={ `${ testId }-userstore-connection-details-edit` }
                     />
                 )
             },
@@ -221,7 +237,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                         type={ type }
                         id={ userStoreId }
                         properties={ properties?.user }
-                        data-testid={ `${testId}-userstore-user-details-edit` }
+                        data-testid={ `${ testId }-userstore-user-details-edit` }
                     />
                 )
             },
@@ -233,7 +249,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                         type={ type }
                         id={ userStoreId }
                         properties={ properties?.group }
-                        data-testid={ `${testId}-userstore-group-details-edit` }
+                        data-testid={ `${ testId }-userstore-group-details-edit` }
                     />
                 )
             }
@@ -256,9 +272,9 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             } }
             titleTextAlign="left"
             bottomMargin={ false }
-            data-testid={ `${testId}-page-layout` }
+            data-testid={ `${ testId }-page-layout` }
         >
-            <ResourceTab panes={ panes } data-testid={ `${testId}-tabs` } />
+            <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` } />
         </PageLayout>
     );
 };
