@@ -230,7 +230,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                         <GeneralRemoteUserstore
                             onSubmit={ onSubmitGeneralRemoteStep }
                             triggerSubmit={ generalStepRemote }
-                            data-testid={ `${testId}-remote-userstore-general-details` }
+                            data-testid={ `${ testId }-remote-userstore-general-details` }
                         />
                     ),
                     icon: AddUserstoreWizardStepIcons.general,
@@ -239,10 +239,10 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 {
                     content: <AgentRemoteUserstore
                         userstoreData={ generalStepRemoteData }
-                        data-testid={ `${testId}-remote-userstore-agent` }
+                        data-testid={ `${ testId }-remote-userstore-agent` }
                     />,
                     icon: AddUserstoreWizardStepIcons.general,
-                    title: t("adminPortal:components.userstores.wizard.steps.general")
+                    title: t("adminPortal:components.userstores.wizard.steps.agents")
                 },
                 {
                     content: <SummaryRemoteUserstore userstoreData={ generalStepRemoteData } />,
@@ -260,7 +260,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                             type={ type }
                             connectionProperties={ properties?.connection?.required }
                             basicProperties={ properties?.basic?.required }
-                            data-testid={ `${testId}-general-details` }
+                            data-testid={ `${ testId }-general-details` }
                         />
                     ),
                     icon: AddUserstoreWizardStepIcons.general,
@@ -273,7 +273,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                             onSubmit={ onSubmitUserDetails }
                             values={ userDetailsData }
                             properties={ properties?.user?.required }
-                            data-testid={ `${testId}-user-details` }
+                            data-testid={ `${ testId }-user-details` }
                         />
                     ),
                     icon: AddUserstoreWizardStepIcons.general,
@@ -286,7 +286,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                             onSubmit={ onSubmitGroupDetails }
                             values={ groupDetailsData }
                             properties={ properties?.group?.required }
-                            data-testid={ `${testId}-group-details` }
+                            data-testid={ `${ testId }-group-details` }
                         />
                     ),
                     icon: AddUserstoreWizardStepIcons.general,
@@ -301,7 +301,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                             groupProperties={ properties?.group?.required }
                             basicProperties={ properties?.basic?.required }
                             type={ type?.typeName }
-                            data-testid={ `${testId}-summary` }
+                            data-testid={ `${ testId }-summary` }
                         />
                     ),
                     icon: AddUserstoreWizardStepIcons.general,
@@ -364,14 +364,14 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     type: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                 }) }
             </Modal.Header>
-            <Modal.Content className="steps-container" data-testid={ `${testId}-steps` }>
+            <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group current={ currentWizardStep }>
                     { STEPS.map((step, index) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
                             title={ step.title }
-                            data-testid={ `${testId}-step-${index}` }
+                            data-testid={ `${ testId }-step-${ index }` }
                         />
                     )) }
                 </Steps.Group>
@@ -389,14 +389,14 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ next } data-testid={ `${testId}-next-button` }>
+                                <PrimaryButton floated="right" onClick={ next } data-testid={ `${ testId }-next-button` }>
                                     { t("common:next") } <Icon name="arrow right" />
                                 </PrimaryButton>
                             ) }
                             { currentWizardStep === STEPS.length - 1 && (
                                 <PrimaryButton
                                     floated="right" onClick={ next }
-                                    data-testid={ `${testId}-finish-button` }
+                                    data-testid={ `${ testId }-finish-button` }
                                 >
                                     { t("common:finish") }
                                 </PrimaryButton>
@@ -406,7 +406,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                                     <LinkButton
                                         floated="right"
                                         onClick={ previous }
-                                        data-testid={ `${testId}-previous-button` }
+                                        data-testid={ `${ testId }-previous-button` }
                                     >
                                         <Icon name="arrow left" /> { t("common:previous") }
                                     </LinkButton>
