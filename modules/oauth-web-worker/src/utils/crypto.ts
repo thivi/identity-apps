@@ -39,7 +39,10 @@ export const getEmailHash = (emailAddress: string): CryptoJS.WordArray => {
  * @returns {string} base 64 url encoded value.
  */
 export const base64URLEncode = (value: CryptoJS.WordArray): string => {
-    return Base64.stringify(value).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+    return Base64.stringify(value)
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=/g, "");
 };
 
 /**
@@ -118,7 +121,9 @@ export const isValidIdToken = (
 ): boolean => {
     return KJUR.jws.JWS.verifyJWT(idToken, jwk, {
         alg: getSupportedSignatureAlgorithms(),
-        aud: [clientID],
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        //@ts-ignore
+        aud: clientID,
         iss: [issuer],
         sub: [username]
     });
