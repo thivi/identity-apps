@@ -29,7 +29,7 @@ import { getUserStores, listRemoteUserstores } from "../../api";
 import { AdvancedSearchWithBasicFilters, UserStoresList } from "../../components";
 import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
-import { FeatureConfigInterface, QueryParams, UserStoreListItem, AccessTokenPostBody } from "../../models";
+import { AccessTokenPostBody, FeatureConfigInterface, QueryParams, UserStoreListItem } from "../../models";
 import { AppState } from "../../store";
 import { filterList, sortList } from "../../utils";
 
@@ -129,14 +129,14 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                                     error?.description ||
                                     t(
                                         "adminPortal:components.userstores.notifications" +
-                                        ".fetchUserstores.genericError.description"
+                                        ".fetchRemoteUserstores.genericError.description"
                                     ),
                                 level: AlertLevels.ERROR,
                                 message:
                                     error?.message ||
                                     t(
                                         "adminPortal:components.userstores.notifications" +
-                                        ".fetchUserstores.genericError.message"
+                                        ".fetchRemoteUserstores.genericError.message"
                                     )
                             })
                         );
@@ -260,7 +260,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             title={ t("adminPortal:components.userstores.pageLayout.list.title") }
             description={ t("adminPortal:components.userstores.pageLayout.list.description") }
             showBottomDivider={ true }
-            data-testid={ `${testId}-page-layout` }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 advancedSearch={
@@ -296,7 +296,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
-                        data-testid={ `${testId}-advanced-search` }
+                        data-testid={ `${ testId }-advanced-search` }
                     />
                 }
                 currentListSize={ listItemLimit }
@@ -315,7 +315,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                             onClick={ () => {
                                 history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"));
                             } }
-                            data-testid={ `${testId}-list-layout-add-button` }
+                            data-testid={ `${ testId }-list-layout-add-button` }
                         >
                             <Icon name="add" />
                             { t("adminPortal:components.userstores.pageLayout.list.primaryAction") }
@@ -329,7 +329,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 showTopActionPanel={ isLoading || !(!searchQuery && filteredUserStores?.length <= 0) }
                 totalPages={ Math.ceil(filteredUserStores?.length / listItemLimit) }
                 totalListSize={ filteredUserStores?.length }
-                data-testid={ `${testId}-list-layout` }
+                data-testid={ `${ testId }-list-layout` }
             >
                 <UserStoresList
                     isLoading={ isLoading }
@@ -341,7 +341,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                     searchQuery={ searchQuery }
                     update={ fetchUserStores }
                     featureConfig={ featureConfig }
-                    data-testid={ `${testId}-list` }
+                    data-testid={ `${ testId }-list` }
                 />
             </ListLayout>
         </PageLayout>
