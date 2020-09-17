@@ -24,7 +24,7 @@ import {
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT
-} from "@wso2is/authentication";
+} from "@asgardio/oidc-js";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

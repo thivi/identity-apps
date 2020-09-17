@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AUTHORIZATION_ENDPOINT, IdentityClient, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@wso2is/authentication";
+import { AUTHORIZATION_ENDPOINT, IdentityClient, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@asgardio/oidc-js";
 import { setSignOutRequestLoadingStatus, setTokenRevokeRequestLoadingStatus } from "./loaders";
 import { getProfileInformation } from "./profile";
 import {
