@@ -19,7 +19,7 @@
 -->
 
 <svg version="1.1" id="status-shield-danger" class="icon status-shield danger" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" style="enable-background:new 0 0 162.5 200; width: 162.5px; height: 200px" viewBox="0 0 162.5 200" xml:space="preserve">
+	 y="0px" style="enable-background:new 0 0 162.5 200; width: 100px;" viewBox="0 0 162.5 200" xml:space="preserve">
 	<path style="fill:#F3F3F3;" d="M162.6,31.3c0.1,0-79.3-30.5-81.3-31.3C79.8,0.6-0.2,31.3-0.1,31.3v57.5c0,39.8,11.4,91.9,81.3,111.2
 		c69.7-19.4,81.1-72.4,81.1-111.2C162.6,69.1,162.6,31.3,162.6,31.3z"/>
 	<path style="fill:#E7E7E7;" d="M0,88.8c0,39.8,11.4,91.9,81.3,111.2V0c-3,1.1-81.3,31.3-81.3,31.3S-0.1,88.8,0,88.8z"/>

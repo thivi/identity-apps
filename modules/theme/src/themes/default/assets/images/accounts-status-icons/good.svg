@@ -19,7 +19,7 @@
 -->
 
 <svg version="1.1" id="status-shield-good" class="icon status-shield good" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
-	 y="0px" viewBox="0 0 162.5 200" style="enable-background:new 0 0 162.5 200; width: 162.5px; height: 200px" xml:space="preserve">
+	 y="0px" viewBox="0 0 162.5 200" style="enable-background:new 0 0 162.5 200; width: 100px;" xml:space="preserve">
 	<path style="fill:#F3F3F3;" d="M162.5,31.2c0.2,0-79.2-30.5-81.3-31.2C79.7,0.6-0.2,31.2,0,31.2v57.5c0,39.8,11.4,91.9,81.3,111.2
 		c69.7-19.4,81.1-72.3,81.1-111.2C162.5,69.1,162.5,31.2,162.5,31.2z"/>
 	<path style="fill:#E7E7E7;" d="M0,88.7c0,39.8,11.4,91.9,81.3,111.2V0C78.3,1.1,0,31.2,0,31.2S0,88.7,0,88.7z"/>
