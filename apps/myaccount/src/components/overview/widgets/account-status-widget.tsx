@@ -16,15 +16,26 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Grid, Header, Icon, Popup, Progress } from "semantic-ui-react";
+import { Grid, Header, Popup } from "semantic-ui-react";
+import {
+    fetchUserSessions,
+    getMetaData,
+    getSecurityQs
+}from "../../../api";
 import { AccountStatusShields } from "../../../configs";
-import * as UIConstants from "../../../constants/ui-constants";
-import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
+import { BasicProfileInterface, ProfileCompletionStatus,  UserSession, UserSessions } from "../../../models";
 import { AppState } from "../../../store";
+import { extractEmailAddress } from "../../../utils";
 import { ThemeIcon } from "../../shared";
+
+interface SecurityStatus {
+    type: string;
+    status: boolean;
+    label: string;
+}
 
 /**
  * Account status widget.
@@ -33,59 +44,84 @@ import { ThemeIcon } from "../../shared";
  */
 export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
     const { t } = useTranslation();
-    const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
 
-    /**
-     * Return the profile completion percentage.
-     *
-     * @return {number}
-     */
-    const getProfileCompletionPercentage = (): number => {
-        return profileCompletion && profileCompletion.percentage ? profileCompletion.percentage : 0;
-    };
+    const profileInfo: BasicProfileInterface = useSelector(
+        (state: AppState) => state.authenticationInformation.profileInfo);
+    const [ isSecurityQuestionsComplete, setIsSecurityQuestionsComplete ] = useState<boolean>(false);
+    const [ isEmailRecoveryComplete, setIsEmailRecoveryComplete ] = useState<boolean>(false);
+    const [ isAuthenticationSMSComplete, setIsAuthenticationSMSComplete ] = useState<boolean>(false);
+    const [ isFIDOCompleted, setIsFIDOCompleted ] = useState<boolean>(false);
+    const [ isMFACompleted, setIsMFACompleted ] = useState<boolean>(false);
+    const [ status, setStatus ] = useState<ProfileCompletionStatus>(ProfileCompletionStatus.ERROR);
+    const [ isNoOldSession, setIsNoOldSession ] = useState<boolean>(false);
 
-    /**
-     * Get the profile status based on the profile completion percentage.
-     *
-     * @return {ProfileCompletionStatus}
-     */
-    const getProfileStatus = (): ProfileCompletionStatus => {
+    useEffect(() => {
 
-        const percentage = getProfileCompletionPercentage();
+        extractEmailAddress(profileInfo)?.email && setIsEmailRecoveryComplete(true);
 
-        if (percentage <= UIConstants.ERROR_ACCOUNT_STATUS_UPPER_LIMIT) {
-            return ProfileCompletionStatus.ERROR;
-        } else if (percentage <= UIConstants.WARNING_ACCOUNT_STATUS_UPPER_LIMIT) {
-            return ProfileCompletionStatus.WARNING;
+        profileInfo.phoneNumbers.map((mobileNo) => {
+            mobileNo?.value && setIsAuthenticationSMSComplete(true);
+        });
+
+        getSecurityQs().then((response) => {
+            const questions = response[ 0 ];
+            const answers = response[ 1 ];
+
+            setIsSecurityQuestionsComplete(questions.length === answers.length);
+        }).catch(() => {
+            setIsSecurityQuestionsComplete(false);
+        });
+
+        getMetaData().then((response) => {
+            response?.data?.length > 0 && setIsFIDOCompleted(true);
+        }).catch(() => {
+            setIsFIDOCompleted(false);
+        });
+
+        fetchUserSessions().then((response: UserSessions) => {
+            const sessions: UserSession[] = response?.sessions;
+
+            const safe: boolean = true;
+
+            for (const session of sessions) {
+                const daysSinceLAstLogin = Math.ceil(
+                    Math.abs(
+                        (new Date(session.lastAccessTime).getTime() - new Date().getTime())
+                    ) / (1000 * 60 * 60 * 24)
+                );
+
+                if (daysSinceLAstLogin > 30) {
+                    setIsNoOldSession(false);
+                    break;
+                }
+            }
+
+            setIsNoOldSession(safe);
+        }).catch(() => {
+            setIsNoOldSession(false);
+        });
+
+    }, [ profileInfo ]);
+
+    useEffect(() => {
+        setIsMFACompleted(isAuthenticationSMSComplete || isFIDOCompleted ? true : false);
+    }, [ isAuthenticationSMSComplete, isFIDOCompleted ]);
+
+    useEffect(() => {
+        const completed: boolean[] = [];
+        isSecurityQuestionsComplete && completed.push(true);
+        isMFACompleted && completed.push(true);
+        isEmailRecoveryComplete && completed.push(true);
+        isNoOldSession && completed.push(true);
+
+        if (completed.length === 4) {
+            setStatus(ProfileCompletionStatus.SUCCESS);
+        } else if (completed.length > 2) {
+            setStatus(ProfileCompletionStatus.WARNING);
+        } else {
+            setStatus(ProfileCompletionStatus.ERROR);
         }
-
-        return ProfileCompletionStatus.SUCCESS;
-    };
-
-    /**
-     * Get the completion percentage based on the completion status of
-     * required and optional fields.
-     *
-     * @remarks
-     * We are not showing optional field incompletion as errors. The `isOptional` param is
-     * used to distinguish if the field we're calculating the status for is optional.
-     *
-     * @param field - Field to check.
-     * @param {boolean} isOptional - Flag to check if the calculation is for the optional field.
-     * @return {ProfileCompletionStatus}
-     */
-    const getFieldCompletionStatus = (field: any, isOptional: boolean): ProfileCompletionStatus => {
-
-        const percentage = (field.completedCount / field.totalCount) * 100;
-
-        if ((percentage <= UIConstants.ERROR_ACCOUNT_STATUS_UPPER_LIMIT) && !isOptional) {
-            return ProfileCompletionStatus.ERROR;
-        } else if (percentage <= UIConstants.WARNING_ACCOUNT_STATUS_UPPER_LIMIT) {
-            return ProfileCompletionStatus.WARNING;
-        }
-
-        return ProfileCompletionStatus.SUCCESS;
-    };
+    }, [ isSecurityQuestionsComplete, isMFACompleted, isEmailRecoveryComplete, isNoOldSession ]);
 
     /**
      * Resolved the type of account status shield based on the completion status.
@@ -93,8 +129,6 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
      * @return {any}
      */
     const resolveStatusShield = () => {
-        const status = getProfileStatus();
-
         if (status === ProfileCompletionStatus.SUCCESS) {
             return AccountStatusShields.good;
         } else if (status === ProfileCompletionStatus.ERROR) {
@@ -106,201 +140,117 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
         return AccountStatusShields.good;
     };
 
-    /**
-     * Generates the more info popup.
-     *
-     * @param attributes - Relevant attributes.
-     * @return {JSX.Element}
-     */
-    const generatePopup = (attributes: any): JSX.Element => (
-        ((attributes.completedAttributes
-            && attributes.completedAttributes.length
-            && attributes.completedAttributes.length > 0)
-            || (attributes.incompleteAttributes
-                && attributes.incompleteAttributes.length
-                && attributes.incompleteAttributes.length > 0))
-            ? (
-                <Popup
-                    trigger={ <Icon color="grey" name="info circle" /> }
-                    position="bottom center"
-                    className="list-content-popup"
-                    hoverable
-                    content={ (
-                        <>
-                            {
-                                (attributes.completedAttributes
-                                    && attributes.completedAttributes.length
-                                    && attributes.completedAttributes.length > 0)
-                                    ? (
-                                        <>
-                                            <div className="header">
-                                                <Icon color="green" name="check circle" />
-                                                { t("userPortal:components.overview.widgets.accountStatus." +
-                                                    "completedFields") }
-                                            </div>
-                                            <ul>
-                                                {
-                                                    attributes.completedAttributes
-                                                        .map((attr, index) => (
-                                                            <li key={ index }>
-                                                                { attr.name === "profileUrl"
-                                                                    ? t("userPortal:components.profile.fields."
-                                                                        + "profileImage",
-                                                                        { defaultValue: attr.displayName })
-                                                                    : t("userPortal:components.profile.fields."
-                                                                        + attr.name.replace(".", "_"),
-                                                                        { defaultValue: attr.displayName })
-                                                                }
-                                                            </li>
-                                                        ))
-                                                }
-                                            </ul>
-                                        </>
-                                    )
-                                    : null
-                            }
-
-                            {
-                                (attributes.incompleteAttributes
-                                    && attributes.incompleteAttributes.length
-                                    && attributes.incompleteAttributes.length > 0)
-                                    ? (
-                                        <>
-                                            <div className="header">
-                                                <Icon color="red" name="times circle" />
-                                                { t("userPortal:components.overview.widgets.accountStatus." +
-                                                    "inCompleteFields") }
-                                            </div>
-                                            <ul>
-                                                {
-                                                    attributes.incompleteAttributes
-                                                        .map((attr, index) => (
-                                                            <li key={ index }>
-                                                                { attr.name === "profileUrl"
-                                                                    ? t("userPortal:components.profile.fields."
-                                                                        + "profileImage",
-                                                                        { defaultValue: attr.displayName })
-                                                                    : t("userPortal:components.profile.fields."
-                                                                        + attr.name.replace(".", "_"),
-                                                                        { defaultValue: attr.displayName })
-                                                                }
-                                                            </li>
-                                                        ))
-                                                }
-                                            </ul>
-                                        </>
-                                    )
-                                    : null
-                            }
-                        </>
-                    ) }
-                    inverted={ true }
-                />
-            )
-            : null
-    );
+    const resolvePopupContent = (type: string, status: boolean): string => {
+        switch (type) {
+            case "email":
+                return status
+                    ? "You have a recovery email. Well done!"
+                    : "You have not set a recovery email. Go to the Security page to set one.";
+            case "securityQuestions":
+                return status
+                    ? "You have security questions configured. " +
+                    "You can use them to recover your account in case you forget your password."
+                    : "You have not configured any security questions. Configure them on the Security page.";
+            case "session":
+                return status
+                    ? "There are no sessions that you haven't accessed in a month. Great going!"
+                    : "You have user sessions that haven't been accessed during the last one month." +
+                    " Terminate those sessions to avoid security issues.";
+            case "mfa":
+                return status
+                    ? "You have multi-factor authentication configured." +
+                    " This adds an extra layer of security to your account."
+                    : "You haven not configured multi-factor authentication. " +
+                    "Configure a multi-factor authentication option on the Security page. ";
+            default:
+                return "";
+        }
+    };
 
     /**
      * Generates the profile completion pre=ogress bar and steps.
      * @return {JSX.Element}
      */
-    const generateCompletionProgress = (): JSX.Element => (
-        <ul className="vertical-step-progress">
+    const generateCompletionProgress = (): ReactElement => {
+        const progress: SecurityStatus[] = [
             {
-                (profileCompletion.required
-                    && profileCompletion.required.totalCount
-                    && profileCompletion.required.completedCount)
-                    ? (
-                        <li
-                            className={ `progress-item ${getFieldCompletionStatus(
-                                profileCompletion.required, false)}` }
-                        >
-                            {
-                                t("userPortal:components.overview.widgets.accountStatus" +
-                                    ".mandatoryFieldsCompletion",
-                                    {
-                                        completed: profileCompletion.required.completedCount,
-                                        total: profileCompletion.required.totalCount
-                                    })
-                            }
-                            { " " }
-                            { generatePopup(profileCompletion.required) }
-                        </li>
-                    )
-                    : null
-            }
+                label: "Recovery email",
+                status: isEmailRecoveryComplete,
+                type: "email"
+            },
             {
-                (profileCompletion.optional
-                    && profileCompletion.optional.totalCount
-                    && profileCompletion.optional.completedCount)
-                    ? (
-                        <li
-                            className={ `progress-item ${getFieldCompletionStatus(
-                                profileCompletion.optional, true)}` }
-                        >
-                            {
-                                t("userPortal:components.overview.widgets.accountStatus" +
-                                    ".optionalFieldsCompletion",
-                                    {
-                                        completed: profileCompletion.optional.completedCount,
-                                        total: profileCompletion.optional.totalCount
-                                    })
-                            }
-                            { " " }
-                            { generatePopup(profileCompletion.optional) }
-                        </li>
-                    )
-                    : null
+                label: "Security Questions",
+                status: isSecurityQuestionsComplete,
+                type: "securityQuestions"
+            },
+            {
+                label: "No old user sessions",
+                status: isNoOldSession,
+                type: "session"
+            },
+            {
+                label: "Multi-factor Authentication",
+                status: isMFACompleted,
+                type: "mfa"
             }
-        </ul>
-    );
+        ];
+
+        progress.sort((a: SecurityStatus, b: SecurityStatus) => {
+            return a.status > b.status ? -1 : 1;
+        });
+
+        return (
+            <div>
+                <ul className="horizontal-step-progress">
+                    {
+                        progress.map((item: SecurityStatus, index: number) => {
+                            return (
+                                <li
+                                    className={ item.status ? "success" : "error" }
+                                    key={ index }
+                                >
+                                    <Popup
+                                        content={ resolvePopupContent(item.type, item.status) }
+                                        trigger={ <div>{ item.label }</div> }
+                                        inverted
+                                    />
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            </div>
+        );
+    };
 
     return (
         <div className="widget account-status">
             <Grid>
                 <Grid.Row>
-                    <Grid.Column largeScreen={ 6 } computer={ 5 } tablet={ 5 } mobile={ 16 }>
+                    <Grid.Column largeScreen={ 4 } computer={ 3 } tablet={ 3 } mobile={ 16 }>
                         <div className="status-shield-container">
-                            <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent />
+                            <ThemeIcon icon={ resolveStatusShield() } size="tiny" transparent />
                         </div>
                     </Grid.Column>
-                    <Grid.Column largeScreen={ 10 } computer={ 11 } tablet={ 11 } mobile={ 16 }>
+                    <Grid.Column largeScreen={ 12 } computer={ 13 } tablet={ 13 } mobile={ 16 } verticalAlign="middle">
                         <div className="description">
                             <Header className="status-header" as="h3">
                                 {
-                                    (getProfileCompletionPercentage() === 100)
-                                        ? t("userPortal:components.overview.widgets.accountStatus.complete")
-                                        : t("userPortal:components.overview.widgets.accountStatus.inComplete")
+                                    status === ProfileCompletionStatus.SUCCESS
+                                        ? "Your account is secure"
+                                        : status === ProfileCompletionStatus.WARNING
+                                            ? "Your account is not secure"
+                                            : "You account is at risk"
                                 }
                             </Header>
-                            <Progress
-                                percent={
-                                    (profileCompletion && profileCompletion.percentage)
-                                        ? profileCompletion.percentage
-                                        : 0
-                                }
-                                size="tiny"
-                                className="account-status-progress"
-                                success={ getProfileStatus() === ProfileCompletionStatus.SUCCESS }
-                                warning={ getProfileStatus() === ProfileCompletionStatus.WARNING }
-                                error={ getProfileStatus() === ProfileCompletionStatus.ERROR }
-                            >
-                                {
-                                    t("userPortal:components.overview.widgets.accountStatus.completionPercentage",
-                                        {
-                                            percentage: profileCompletion && profileCompletion.percentage
-                                                ? profileCompletion.percentage
-                                                : 0
-                                        })
-                                }
-                            </Progress>
-                            <Divider hidden />
-                            {
-                                profileCompletion && (profileCompletion.required || profileCompletion.optional)
-                                    ? generateCompletionProgress()
-                                    : null
-                            }
                         </div>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column>
+                        {
+                            generateCompletionProgress()
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
