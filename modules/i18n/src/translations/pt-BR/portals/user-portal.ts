@@ -708,13 +708,32 @@ export const userPortal: UserPortalNS = {
                     header: "Segurança da conta"
                 },
                 accountStatus: {
-                    complete: "Seu perfil está completo",
-                    completedFields: "Campos preenchidos",
-                    completionPercentage: "A conclusão do seu perfil está em {{percentage}}%",
-                    inComplete: "Complete seu perfil",
-                    inCompleteFields: "Campos incompletos",
-                    mandatoryFieldsCompletion: "{{completed}} de {{total}} campos obrigatórios preenchidos",
-                    optionalFieldsCompletion: "{{completed}} de {{total}} campos opcionais preenchidos"
+                    email: {
+                        errorMessage: "Você não definiu um e-mail de recuperação. " +
+                            "Vá para a página Segurança para definir um.",
+                        label: "Email de recuperação",
+                        successMessage: "Você tem um e-mail de recuperação. Bem feito!"
+                    },
+                    mfa: {
+                        errorMessage: "Você não configurou a autenticação multifator."
+                            + "Configure uma opção de autenticação multifator na página Segurança.",
+                        label: "Autenticação multifator",
+                        successMessage: "Você configurou a autenticação multifator."
+                            + " Isso adiciona uma camada extra de segurança à sua conta."
+                    },
+                    securityQuestions: {
+                        errorMessage: "Você não configurou nenhuma pergunta de segurança."
+                            + "Configure-os na página Segurança.",
+                        label: "Questões de segurança",
+                        successMessage: "Você tem perguntas de segurança configuradas."
+                            + "Você pode usá-los para recuperar sua conta caso esqueça sua senha."
+                    },
+                    userSessions: {
+                        errorMessage: "Você tem sessões de usuário que não foram acessadas durante o último mês."
+                            + " Encerre essas sessões para evitar problemas de segurança.",
+                        label: "Sem sessões de usuário antigas",
+                        successMessage: "Não há sessões que você não acessa há um mês. Muito bem!"
+                    }
                 },
                 consentManagement: {
                     actionTitles: {

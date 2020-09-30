@@ -19,6 +19,15 @@
 import { DangerZone, ModalInterface, Notification, NotificationItem, Page, Placeholder } from "../common";
 
 /**
+ * Model of the account status attributes.
+ */
+interface AccountStatus {
+    label: string;
+    successMessage: string;
+    errorMessage: string;
+}
+
+/**
  * Model for the user portal portal namespace
  */
 export interface UserPortalNS {
@@ -377,13 +386,10 @@ export interface UserPortalNS {
                     header: string;
                 };
                 accountStatus: {
-                    complete: string;
-                    completedFields: string;
-                    completionPercentage: string;
-                    inComplete: string;
-                    inCompleteFields: string;
-                    mandatoryFieldsCompletion: string;
-                    optionalFieldsCompletion: string;
+                    email: AccountStatus;
+                    securityQuestions: AccountStatus;
+                    userSessions: AccountStatus;
+                    mfa: AccountStatus;
                 };
                 consentManagement: {
                     actionTitles: {

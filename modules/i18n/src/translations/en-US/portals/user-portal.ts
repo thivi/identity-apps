@@ -710,13 +710,31 @@ export const userPortal: UserPortalNS = {
                     header: "Account security"
                 },
                 accountStatus: {
-                    complete: "Your profile is complete",
-                    completedFields: "Completed fields",
-                    completionPercentage: "Your profile completion is at {{percentage}}%",
-                    inComplete: "Complete your profile",
-                    inCompleteFields: "Incomplete fields",
-                    mandatoryFieldsCompletion: "{{completed}} out of {{total}} mandatory fields completed",
-                    optionalFieldsCompletion: "{{completed}} out of {{total}} optional fields completed"
+                    email: {
+                        errorMessage: "You have not set a recovery email. Go to the Security page to set one.",
+                        label: "Recovery email",
+                        successMessage: "You have a recovery email. Well done!"
+                    },
+                    mfa: {
+                        errorMessage: "You have not configured multi-factor authentication."
+                            + "Configure a multi-factor authentication option on the Security page.",
+                        label: "Multi-factor Authentication",
+                        successMessage: "You have multi-factor authentication configured."
+                            + " This adds an extra layer of security to your account."
+                    },
+                    securityQuestions: {
+                        errorMessage: "You have not configured any security questions."
+                            + "Configure them on the Security page.",
+                        label: "Security Questions",
+                        successMessage: "You have security questions configured."
+                            + "You can use them to recover your account in case you forget your password."
+                    },
+                    userSessions: {
+                        errorMessage: "You have user sessions that haven't been accessed during the last one month."
+                            + " Terminate those sessions to avoid security issues.",
+                        label: "No old user sessions",
+                        successMessage: "There are no sessions that you haven't accessed in a month. Great going!"
+                    }
                 },
                 consentManagement: {
                     actionTitles: {
