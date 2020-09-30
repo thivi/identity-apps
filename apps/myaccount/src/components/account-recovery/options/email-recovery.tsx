@@ -18,15 +18,16 @@
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
-import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "../../../models";
+import { AlertInterface, AlertLevels, BasicProfileInterface, PrimaryEmail, ProfileSchema } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation } from "../../../store/actions";
+import { extractEmailAddress } from "../../../utils";
 import { EditSection, ThemeIcon } from "../../shared";
 
 /**
@@ -59,6 +60,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
         if (emailSchemas && emailSchemas.subAttributes) {
             return emailSchemas.subAttributes[0];
         }
+
         return emailSchemas;
     });
 
@@ -67,7 +69,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
     const [ isEdit, setIsEdit ] = useState(false);
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
 
-    let emailType: string;
+    const emailType = useRef(null);
 
     /**
      * Set the if the email verification is pending.
@@ -95,10 +97,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
         data.Operations[0].value = {
-            emails: emailType || emailSchema
+            emails: emailType.current || emailSchema
                 ? [
                     {
-                        type: emailType || emailSchema.name,
+                        type: emailType.current || emailSchema.name,
                         value: emailAddress
                     }
                 ]
@@ -153,34 +155,15 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
             });
     };
 
-    /**
-     * This function gets the email address from the response passed as the argument
-     * and assigns it to email and editedEmail.
-     * @param response
-     * @remark Temporarily the first element in the emails array is shown.
-     * In the future, we need to decide whether or not to allow multiple recovery emails
-     */
-    const setEmailAddress = (response) => {
-        let emailAddress = "";
-        if (response.emails) {
-            if (typeof response.emails[0] === "object" && response.emails[0] !== null) {
-                emailAddress = response.emails[0].value;
-                emailType = response.emails[0].type;
-            } else {
-                emailAddress = response.emails[0];
-                emailType = "array";
-            }
-        }
-        setEmail(emailAddress);
-        setEditedEmail(emailAddress);
-    };
-
     useEffect(() => {
         if (!isEmpty(profileInfo)) {
-            setEmailAddress(profileInfo);
+            const primaryEmail: PrimaryEmail = extractEmailAddress(profileInfo);
+            setEmail(primaryEmail.email);
+            emailType.current = primaryEmail.type;
+            setEditedEmail(primaryEmail.email);
         }
     }, [profileInfo]);
-    
+
     /**
      * This is called when the edit icon is clicked.
      *
