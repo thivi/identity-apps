@@ -1459,6 +1459,52 @@ body {
     }
 }
 
+.horizontal-step-progress {
+    list-style: none;
+    display: flex;
+
+    li {
+        padding-right: 20px;
+        padding-top: 20px;
+        position: relative;
+        cursor: pointer;
+
+        &:not(:last-child){
+            border-top: 2px dashed @lightGray;
+        }
+
+        &::before {
+            content: '';
+            display: block;
+            border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            top: -8px;
+        }
+
+        &.success {
+            &::before {
+                background-color: @positiveColor;
+                border: 2px solid lighten(@positiveColor, 20%);
+            }
+        }
+
+        &.error {
+            &::before {
+                background-color: @negativeColor;
+                border: 2px solid lighten(@negativeColor, 20%);
+            }
+        }
+
+        &.warning {
+            &::before {
+                background-color: @warningColor;
+            }
+        }
+    }
+}
+
 /*****************************************
             Pagination
 *****************************************/
