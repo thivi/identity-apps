@@ -24,7 +24,8 @@ import {
     ProfileAttribute,
     ProfileCompletion,
     ProfileSchema,
-    emptyProfileCompletion
+    emptyProfileCompletion,
+    PrimaryEmail
 } from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
@@ -248,4 +249,31 @@ export const getProfileCompletion = (
     store.dispatch(setProfileCompletion(completion));
 
     return completion;
+};
+
+/**
+ * This function gets the email address from the profile info passed as the argument
+ * and returns the email address.
+ *
+ * @param {BasicProfileInterface} profileInfo - The profile information.
+ * @return {string} email - The email address.
+ * @remark Temporarily the first element in the emails array is shown.
+ * In the future, we need to decide whether or not to allow multiple recovery emails
+ */
+export const extractEmailAddress = (profileInfo: BasicProfileInterface): PrimaryEmail => {
+    let emailAddress: string = "";
+    let emailType: string = "";
+    if (profileInfo.emails) {
+        if (typeof profileInfo.emails[0] === "object" && profileInfo.emails[0] !== null) {
+            emailAddress = profileInfo.emails[ 0 ].value;
+            emailType = profileInfo.emails[ 0 ].type;
+        } else {
+            emailAddress = profileInfo.emails[0];
+        }
+    }
+
+    return {
+        email: emailAddress,
+        type: emailType
+    };
 };
