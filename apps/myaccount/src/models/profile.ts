@@ -170,6 +170,15 @@ export interface ReadOnlyUserStatus {
 }
 
 /**
+ * Model of the object containing the email address and the type
+ * returned by the `extractEmailAddress` util function.
+ */
+export interface PrimaryEmail{
+    email: string;
+    type: string;
+}
+
+/**
  * Empty profile completion object.
  *
  * @return {ProfileCompletion}
