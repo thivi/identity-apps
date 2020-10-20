@@ -349,3 +349,34 @@
         }
     }
 }
+
+/*----------------------------------
+            Help menu
+------------------------------------*/
+.ui.grid {
+    .column {
+        &.sticky {
+            position: fixed;
+            height: calc(100vh - 180px)!important;
+            z-index: 999!important;
+            width: 21%!important;
+            max-width: 280px!important;
+        }
+
+        &.scrollable {
+            overflow-y: auto;
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .ui.grid {
+        .column {
+            &.sticky {
+                position: static;
+                width: 100%!important;
+                max-width: unset!important;
+            }
+        }
+    }
+}
