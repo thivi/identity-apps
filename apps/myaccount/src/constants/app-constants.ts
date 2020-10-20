@@ -159,6 +159,7 @@ export class AppConstants {
             .set("PERSONAL_INFO", `${ this.getMainViewBasePath() }/personal-info`)
             .set("SECURITY", `${ this.getMainViewBasePath() }/security`)
             .set("PRIVACY", `${ this.getMainViewBasePath() }/privacy`)
+            .set("HELP", `${this.getMainViewBasePath()}/help`)
             .set("ROOT", "/")
             .set("UNAUTHORIZED", `${ this.getMainViewBasePath() }/unauthorized`)
             .set("STORING_DATA_DISABLED",`${ this.getMainViewBasePath() }/storing_data_disabled`);
