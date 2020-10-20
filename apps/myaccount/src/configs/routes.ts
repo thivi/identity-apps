@@ -94,6 +94,14 @@ export const getAppRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
+            component: lazy(() => import("../pages/help-page")),
+            id: "help",
+            name: "common:help",
+            path: AppConstants.getPaths().get("HELP"),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
             component: lazy(() => import("../pages/errors/access-denied-error")),
             id: "accessDeniedError",
             name: "Access denied error",
