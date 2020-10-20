@@ -467,3 +467,27 @@
         }
     }
 }
+
+/*-------------------
+     Help Menu
+--------------------*/
+
+.ui.menu {
+    .item {
+        &.level2 {
+            padding-left: 1em;
+        }
+        &.level3 {
+            padding-left: 2em;
+        }
+        &.level4 {
+            padding-left: 3em;
+        }
+        &.level5 {
+            padding-left: 4em;
+        }
+        &.level6 {
+            padding-left: 5em;
+        }
+    }
+}
