@@ -25,7 +25,7 @@ import { AppFooter, Header, PageHeader } from "../components";
  */
 interface DefaultPageLayoutProps {
     children?: React.ReactNode;
-    pageTitle: string;
+    pageTitle?: string;
     pageDescription?: string;
     pageTitleTextAlign?: "left" | "center" | "right" | "justified";
 }
