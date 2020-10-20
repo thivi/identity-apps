@@ -36,7 +36,7 @@ import { EmptyPlaceholderIllustrations } from "../configs";
  */
 interface InnerPageLayoutProps {
     children?: React.ReactNode;
-    pageTitle: string;
+    pageTitle?: string;
     pageDescription?: string;
     pageTitleTextAlign?: "left" | "center" | "right" | "justified";
 }
@@ -85,7 +85,7 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
 
     return (
         <>
-            <GlobalLoader height={ 3 }/>
+            <GlobalLoader height={ 3 } />
             <Header
                 onSidePanelToggleClick={ handleSidePanelToggleClick }
             />
@@ -114,17 +114,23 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                             />
                         ) }
                     >
-                        <PageHeader
-                            title={ pageTitle }
-                            description={ pageDescription }
-                            titleTextAlign={ pageTitleTextAlign }
-                        />
+                        {
+                            pageTitle || pageDescription
+                                ? (
+                                    < PageHeader
+                                        title={ pageTitle }
+                                        description={ pageDescription }
+                                        titleTextAlign={ pageTitleTextAlign }
+                                    />
+                                )
+                                : null
+                        }
                         { children }
                     </ErrorBoundary>
                 </SidePanelWrapper>
             </div>
             <Alert dismissInterval={ 5 } alertsPosition="br" />
-            <AppFooter/>
+            <AppFooter />
         </>
     );
 };
