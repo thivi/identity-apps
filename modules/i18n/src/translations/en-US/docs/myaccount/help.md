@@ -59,11 +59,11 @@ Various elements of the **My Account** application can be managed by the users t
 2. Click the **Personal info** tab on the side panel.
 3. Hover over the profile picture or the placeholder and click on the camera icon.
 
-    ![profile-picture-hover](/myaccount/resources/assets/myaccount/user-profile/profile-picture-hover.png)
+    ![profile-picture-hover](/myaccount/resources/i18n/assets/myaccount/user-profile/profile-picture-hover.png)
 
 4. In the pop-up that appears, enter the URL of the image that needs to be set as the profile picture in the textbox.
 
-    ![profile-picture-url](/myaccount/resources/assets/myaccount/user-profile/profile-picture-url.png)
+    ![profile-picture-url](/myaccount/resources/i18n/assets/myaccount/user-profile/profile-picture-url.png)
 
 ---
 
@@ -79,11 +79,11 @@ Users can link and manage local and federated accounts seamlessly using **My Acc
 2. Click the **Personal info** tab on the side panel.
 3. Under the linked account sub section, click **Add account**.
 
-    ![linked-account-add](/myaccount/resources/assets/myaccount/linked-account/linked-acount-add.png)
+    ![linked-account-add](/myaccount/resources/i18n/assets/myaccount/linked-account/linked-acount-add.png)
 
 4. Enter the username and the password of the account that needs to be linked and click **Save**.
 
-    ![linked-account-save](/myaccount/resources/assets/myaccount/linked-account/linked-account-save.png)
+    ![linked-account-save](/myaccount/resources/i18n/assets/myaccount/linked-account/linked-account-save.png)
 
 ### Delete linked accounts
 
@@ -120,7 +120,7 @@ You can export your profile by following the instructions given below.
 2. Click the **Personal info** tab on the side panel.
 3. Under the **Export profile** sub section, click on the **Download as JSON** button. All the profile details will be downloaded to your local machine as a JSON file.
 
-    ![profile-export](/myaccount/resources/assets/myaccount/user-profile/profile-export.png)
+    ![profile-export](/myaccount/resources/i18n/assets/myaccount/user-profile/profile-export.png)
 
 ---
 
@@ -212,23 +212,23 @@ This is supported by only a few browsers namely Chrome, Mozilla Firefox, and Mic
 3. Under the **Multi-factor authentication** section, click on the add icon aligning with the **via security device** section.
 4. Select an option depending on whether to add a USB security key or a built-in sensor.
 
-    ![fido-options-list](/myaccount/resources/assets/myaccount/account-recovery/fido-options-list.png)
+    ![fido-options-list](/myaccount/resources/i18n/assets/myaccount/account-recovery/fido-options-list.png)
 
 5. Click on **Continue**. Alternatively, click on the **Choose another option** dropdown to switch your option.
 
-    ![fido-option-confirm](/myaccount/resources/assets/myaccount/account-recovery/fido-option-confirm.png)
+    ![fido-option-confirm](/myaccount/resources/i18n/assets/myaccount/account-recovery/fido-option-confirm.png)
 
 6. Click on **Continue**. Alternatively, click on the **Choose another option** dropdown to switch your option.
 
-    ![fido-option-allow](/myaccount/resources/assets/myaccount/account-recovery/fido-option-allow.png)
+    ![fido-option-allow](/myaccount/resources/i18n/assets/myaccount/account-recovery/fido-option-allow.png)
 
 7. Add the preferred device name.
 
-    ![fido-option-device-name](/myaccount/resources/assets/myaccount/account-recovery/fido-option-device-name.png)
+    ![fido-option-device-name](/myaccount/resources/i18n/assets/myaccount/account-recovery/fido-option-device-name.png)
 
 8. Once the device is successfully added, the registered device will be listed along with its name.
 
-    ![fido-devices-list](/myaccount/resources/assets/myaccount/account-recovery/fido-devices-list.png)
+    ![fido-devices-list](/myaccount/resources/i18n/assets/myaccount/account-recovery/fido-devices-list.png)
 
 ```info
 * Using an older FIDO device *
@@ -240,12 +240,12 @@ Follow the steps given below to add the device as an older device.
 
 1. Click **close**.
 
-    ![fido-device-old](/myaccount/resources/assets/myaccount/account-recovery/fido-device-old.png)
+    ![fido-device-old](/myaccount/resources/i18n/assets/myaccount/account-recovery/fido-device-old.png)
 
 
 2. Click **Try with an older Device**.
 
-    ![fido-device-old-error](/myaccount/resources/assets/myaccount/account-recovery/fido-device-old-error.png)
+    ![fido-device-old-error](/myaccount/resources/i18n/assets/myaccount/account-recovery/fido-device-old-error.png)
 
 
 3. From this point onwards, the steps to register the device are the same as the steps given in [Add security device](#add-security-device).
@@ -255,7 +255,7 @@ Follow the steps given below to add the device as an older device.
 
 Any security device registered under MFA can be simply removed by clicking the delete icon.
 
-![fido-device-delete](/myaccount/resources/assets/myaccount/account-recovery/fido-device-delete.png)
+![fido-device-delete](/myaccount/resources/i18n/assets/myaccount/account-recovery/fido-device-delete.png)
 
 ---
 
@@ -296,4 +296,4 @@ WSO2 IS enables more control over the tasks that are executed using workflows. T
 
 Whenever a user gets created in the system, that task will appear under the **ready** section waiting for approval. Whenever a task  is reviewed and claimed, that task will be listed under the **reserved** section of approvals. Once the task is approved or denied, it will appear under the **completed** section.
 
-![pending-approvals-all](/myaccount/resources/assets/myaccount/pending-approvals/pending-approvals-all.png)
+![pending-approvals-all](/myaccount/resources/i18n/assets/myaccount/pending-approvals/pending-approvals-all.png)
