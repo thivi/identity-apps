@@ -19,6 +19,7 @@
 const path = require("path");
 const fs = require("fs-extra");
 const { execSync } = require("child_process");
+const ncp = require("ncp").ncp;
 
 // eslint-disable-next-line no-console
 const log = console.log;
@@ -116,6 +117,28 @@ for (const value of Object.values(translations)) {
             paths: resourcePaths,
         },
     };
+
+    log("\nCopying the docs of " + value.meta.code + " to the output directory.");
+    const docPath = path.resolve("src/translations/" + value.meta.code + "/docs");
+
+    // Copy the docs directory to the output directory.
+    if (fs.existsSync(docPath)) {
+        ncp(docPath, langDirPath + "/docs/", (error) => {
+            if (error) {
+                console.error("\nAn error occurred while copying the docs directory from "
+                    + docPath + " to " + langDirPath);
+                log(error);
+
+                //Terminate the script.
+                process.exit();
+            }
+
+            log("\nSuccessfully copied docs from " + docPath + " to " + langDirPath);
+        });
+    } else {
+        log("\n" + value.meta.code + " doesn't have docs yet. Skipping it.");
+    }
+
 }
 
 createFile(path.join(outputPath, META_FILE_NAME),
@@ -125,6 +148,23 @@ log("\nCreated the locale meta file.");
 
 log("\nSuccessfully generated the locale bundle.");
 
+log("\nCopying the doc assets folder.");
+// Copy the document assets the output directory.
+const assetsPath = path.resolve("src/translations/assets");
+if (fs.existsSync(assetsPath)) {
+    ncp(assetsPath, translationsPath, (error) => {
+        if (error) {
+            console.error("\nAn error occurred while copying the assets directory from "
+                + assetsPath + " to " + translationsPath);
+            log(error);
+
+            //Terminate the script.
+            process.exit();
+        }
+
+        log("\nSuccessfully copied docs from " + assetsPath + " to " + translationsPath);
+    })
+}
 log("\nRunning cleanup task......");
 
 execSync("npm run clean:translations");
