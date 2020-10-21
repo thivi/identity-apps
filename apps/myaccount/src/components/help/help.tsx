@@ -17,6 +17,7 @@
  */
 
 import { AlertLevels } from "@wso2is/core/models";
+import { I18n } from "@wso2is/i18n";
 import { Markdown } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -98,38 +99,49 @@ export const Help: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    useEffect(() => {
-
+    const transformMD = (response: string): void => {
         const headings: TableOfContent[] = [];
 
-        getHelp("en-US")
-            .then((response: string) => {
-                const md = response
-                    .replace(/#+\s.+/g, (heading: string) => {
-                        const level = heading.match(/#/g)?.length ?? 0;
-                        const text = heading.match(/[^#\s].+/)[ 0 ];
-                        const slug = text.replace(/\s/g, "-").toLowerCase();
-                        level > 1 && headings.push({
-                            level,
-                            slug,
-                            text
-                        });
-                        return heading;
-                    });
+        const md = response
+            .replace(/#+\s.+/g, (heading: string) => {
+                const level = heading.match(/#/g)?.length ?? 0;
+                const text = heading.match(/[^#\s].+/)[ 0 ];
+                const slug = text.replace(/\s/g, "-").toLowerCase();
+                level > 1 && headings.push({
+                    level,
+                    slug,
+                    text
+                });
+                return heading;
+            });
 
-                setToc(headings);
-                setDoc(md);
+        setToc(headings);
+        setDoc(md);
+    };
+    useEffect(() => {
+
+        getHelp(I18n.instance.language)
+            .then((response: string) => {
+                transformMD(response);
             })
-            .catch(() => {
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "userPortal:components.profile.notifications.updateProfileInfo.success.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t("userPortal:components.profile.notifications.updateProfileInfo.success.message")
-                    })
-                );
+            .catch((error) => {
+                if (error?.response?.status === 404) {
+                    getHelp("en-US").then((response: string) => {
+                        transformMD(response);
+                    }).catch(() => {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "userPortal:components.profile.notifications.updateProfileInfo.success.description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t("userPortal:components.profile.notifications." +
+                                    "updateProfileInfo.success.message")
+                            })
+                        );
+                    });
+                }
+
             });
     }, []);
 
