@@ -95,10 +95,16 @@ const CodeRenderer = ({ language, value }: { language: string; value: string }):
 export const Help: FunctionComponent = (): ReactElement => {
     const [ doc, setDoc ] = useState<string>("");
     const [ toc, setToc ] = useState<TableOfContent[]>([]);
+    const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
+    /**
+     * Sanitizes the document and builds headings.
+     *
+     * @param {string} response - The document.
+     */
     const transformMD = (response: string): void => {
         const headings: TableOfContent[] = [];
 
@@ -120,33 +126,37 @@ export const Help: FunctionComponent = (): ReactElement => {
     };
     useEffect(() => {
 
+        setIsLoading(true);
         getHelp(I18n.instance.language)
             .then((response: string) => {
                 transformMD(response);
             })
             .catch((error) => {
                 if (error?.response?.status === 404) {
-                    getHelp("en-US").then((response: string) => {
+                    getHelp("en-USs").then((response: string) => {
                         transformMD(response);
                     }).catch(() => {
                         dispatch(
                             addAlert({
                                 description: t(
-                                    "userPortal:components.profile.notifications.updateProfileInfo.success.description"
+                                    "userPortal:components.help.notifications.error.description"
                                 ),
                                 level: AlertLevels.ERROR,
-                                message: t("userPortal:components.profile.notifications." +
-                                    "updateProfileInfo.success.message")
+                                message: t("userPortal:components.help.notifications." +
+                                    "error.message")
                             })
                         );
                     });
                 }
 
+            }).finally(() => {
+                setIsLoading(false);
             });
     }, []);
 
     return (
-        <Grid columns={ 2 }>
+        !isLoading && doc
+        && <Grid columns={ 2 }>
             <Grid.Column computer={ 4 } tablet={ 6 } mobile={ 16 } className="sticky scrollable">
                 <Menu secondary vertical>
                     {
