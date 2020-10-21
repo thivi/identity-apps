@@ -22,12 +22,13 @@ import axios from "axios";
 /**
  * This fetches the md doc of the my account from the github repo and returns it.
  *
+ * @param {string} Language - The language of the doc.
  * @return {Promise<any>} MD doc - The MD help doc.
  */
-export const getHelp = (): Promise<any> => {
+export const getHelp = (lang: string): Promise<any> => {
     const config = {
         method: HttpMethods.GET,
-        url: "https://raw.githubusercontent.com/wso2/docs-is/master/en/docs/learn/my-account.md"
+        url: `/resources/i18n/${lang}/docs/myaccount/help.md`
     };
 
     return axios(config).then((response) => {
