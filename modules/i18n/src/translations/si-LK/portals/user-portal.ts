@@ -411,6 +411,14 @@ export const userPortal: UserPortalNS = {
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
+        help: {
+            notifications: {
+                error: {
+                    description: "උදව් ලේඛනය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                    message: "මොකක්හරි වැරැද්දක් වෙලා"
+                }
+            }
+        },
         linkedAccounts: {
             accountTypes: {
                 local: {

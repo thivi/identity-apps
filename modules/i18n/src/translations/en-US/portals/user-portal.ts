@@ -412,6 +412,14 @@ export const userPortal: UserPortalNS = {
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
+        help: {
+            notifications: {
+                error: {
+                    description: "An error occurred while fetching the help document.",
+                    message: "Something went wrong"
+                }
+            }
+        },
         linkedAccounts: {
             accountTypes: {
                 local: {

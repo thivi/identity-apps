@@ -409,6 +409,14 @@ export const userPortal: UserPortalNS = {
         footer: {
             copyright: "Servidor de Identidade WSO2 © {{year}}"
         },
+        help: {
+            notifications: {
+                error: {
+                    description: "Ocorreu um erro ao obter o documento de ajuda.",
+                    message: "Algo deu errado"
+                }
+            }
+        },
         linkedAccounts: {
             accountTypes: {
                 local: {

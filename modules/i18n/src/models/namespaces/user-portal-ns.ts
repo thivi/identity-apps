@@ -243,6 +243,9 @@ export interface UserPortalNS {
         footer: {
             copyright: string;
         };
+        help: {
+            notifications: Notification;
+        };
         linkedAccounts: {
             accountTypes: {
                 local: {
