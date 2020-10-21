@@ -78,7 +78,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (): ReactEleme
                     to: AppConstants.getPaths().get("PRIVACY")
                 },
                 {
-                    name: "Help",
+                    name: t("common:help"),
                     to: AppConstants.getPaths().get("HELP")
                 }
             ] }
