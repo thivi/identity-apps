@@ -563,3 +563,21 @@
         }
     }
 }
+
+/*-----------------------------
+        Doc segments
+------------------------------*/
+.ui.piled.segments {
+    &.info {
+        .segment {
+            border-left: solid 4px @teal;
+            border-top: none;
+        }
+    }
+    &.tip {
+        .segment {
+            border-left: solid 4px @yellow;
+            border-top: none;
+        }
+    }
+}
