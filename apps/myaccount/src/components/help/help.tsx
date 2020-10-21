@@ -18,12 +18,17 @@
 
 import { AlertLevels } from "@wso2is/core/models";
 import { Markdown } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState, ReactNode } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import {
+    Grid,
+    Icon,
+    Menu,
+    Segment
+} from "semantic-ui-react";
 import { getHelp } from "../../api";
 import { addAlert } from "../../store/actions";
-import { Grid, List, Rail, Segment, Menu, Responsive } from "semantic-ui-react";
 
 interface TableOfContent {
     text: string;
@@ -49,14 +54,43 @@ const HeadingRenderer = (props): ReactElement => {
     return React.createElement("h" + props.level, { id: slug }, props.children);
 };
 
-/**
- * The base URL of the assets.
- *
- * @constant
- * @type {string}
- */
-const GITHUB_URL = "https://raw.githubusercontent.com/wso2/docs-is/master/en/docs/";
+const CodeRenderer = ({ language, value }: { language: string; value: string }): ReactElement => {
+    if (language === "info") {
+        const title = value?.toString().match(/^\*{1}[^*]+\*{1}\s*/)?.toString().replace(/\*/g, "");
+        const content = value.replace(value?.toString().match(/^\*{1}[^*]+\*{1}\s*/)?.toString(), "");
 
+        return (
+            <Segment.Group piled className="info">
+                <Segment inverted color="teal">
+                    <Icon name="info circle" />
+                    { title ?? "Info" }
+                </Segment>
+                <Segment raised padded>
+                    <Markdown source={ content?.trim() } />
+                </Segment>
+            </Segment.Group>
+
+        );
+    }
+
+    if (language === "tip") {
+        const title = value?.toString().match(/^\*{1}[^*]+\*{1}\s*/)?.toString().replace(/\*/g, "");
+        const content = value.replace(value?.toString().match(/^\*{1}[^*]+\*{1}\s*/)?.toString(), "");
+        return (
+            <Segment.Group piled className="tip">
+                <Segment inverted color="yellow">
+                    <Icon name="fire" />
+                    { title ?? "Tip" }
+                </Segment>
+                <Segment raised padded>
+                    <Markdown source={ content?.trim() } />
+                </Segment>
+            </Segment.Group>
+        );
+    }
+
+    return <div>{ value }</div>;
+};
 export const Help: FunctionComponent = (): ReactElement => {
     const [ doc, setDoc ] = useState<string>("");
     const [ toc, setToc ] = useState<TableOfContent[]>([]);
@@ -68,11 +102,9 @@ export const Help: FunctionComponent = (): ReactElement => {
 
         const headings: TableOfContent[] = [];
 
-        getHelp()
+        getHelp("en-US")
             .then((response: string) => {
                 const md = response
-                    .replace(/\((\.\.\/)/g, "(" + GITHUB_URL)
-                    .replace(/!!!\snote\s*/g, "")
                     .replace(/#+\s.+/g, (heading: string) => {
                         const level = heading.match(/#/g)?.length ?? 0;
                         const text = heading.match(/[^#\s].+/)[ 0 ];
@@ -114,7 +146,8 @@ export const Help: FunctionComponent = (): ReactElement => {
                                     className={ `level${ heading.level }` }
                                     onClick={ () => {
                                         location.hash = heading.slug;
-                                    } }>
+                                    } }
+                                >
                                     { heading.text }
                                 </Menu.Item>
                             );
@@ -127,9 +160,13 @@ export const Help: FunctionComponent = (): ReactElement => {
             </Grid.Column>
             <Grid.Column computer={ 12 } tablet={ 10 } mobile={ 16 }>
                 <Segment padded>
-                    <Markdown source={ doc } renderers={ {
-                        heading: HeadingRenderer
-                    } } />
+                    <Markdown
+                        source={ doc }
+                        renderers={ {
+                            code: CodeRenderer,
+                            heading: HeadingRenderer
+                        } }
+                    />
                 </Segment>
             </Grid.Column>
         </Grid>
