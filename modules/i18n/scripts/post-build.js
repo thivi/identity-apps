@@ -146,25 +146,26 @@ createFile(path.join(outputPath, META_FILE_NAME),
 
 log("\nCreated the locale meta file.");
 
-log("\nSuccessfully generated the locale bundle.");
-
 log("\nCopying the doc assets folder.");
 // Copy the document assets the output directory.
 const assetsPath = path.resolve("src/translations/assets");
 if (fs.existsSync(assetsPath)) {
-    ncp(assetsPath, translationsPath, (error) => {
+    ncp(assetsPath, outputPath+ "/assets", (error) => {
         if (error) {
             console.error("\nAn error occurred while copying the assets directory from "
-                + assetsPath + " to " + translationsPath);
+                + assetsPath + " to " + outputPath);
             log(error);
 
             //Terminate the script.
             process.exit();
         }
 
-        log("\nSuccessfully copied docs from " + assetsPath + " to " + translationsPath);
+        log("\nSuccessfully copied docs from " + assetsPath + " to " + outputPath + "/assets");
     })
 }
+
+log("\nSuccessfully generated the locale bundle.");
+
 log("\nRunning cleanup task......");
 
 execSync("npm run clean:translations");
