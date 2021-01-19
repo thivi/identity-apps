@@ -515,6 +515,7 @@ export interface ConsoleNS {
                                                     subjectIdentifierFrom: FormAttributes;
                                                 };
                                             };
+                                            secondFactorDisabled: string;
                                         };
                                     };
                                 };
@@ -1177,7 +1178,7 @@ export interface ConsoleNS {
                         next: string;
                         finish: string;
                         previous: string;
-    
+
                     };
                 };
             };
