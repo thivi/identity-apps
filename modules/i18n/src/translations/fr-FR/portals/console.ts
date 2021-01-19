@@ -2061,6 +2061,13 @@ export const console: ConsoleNS = {
                             message: "Révocation réussie"
                         }
                     },
+                    secondFactorAuthenticatorToFirstStep: {
+                        genericError: {
+                            description: "Impossible d'ajouter des authentificateurs de second " +
+                                "facteur à la première étape.",
+                            message: "Impossible d'ajouter à cette étape"
+                        }
+                    },
                     updateAdvancedConfig: {
                         error: {
                             description: "{{description}}",
