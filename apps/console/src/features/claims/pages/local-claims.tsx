@@ -117,7 +117,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
         };
         getAllLocalClaims(params).then(response => {
             setClaims(response);
-            setFilteredClaims(response);
+            setFilteredClaims(sortList(response, sortBy.value as string, sortOrder));
         }).catch(error => {
             dispatch(addAlert(
                 {

@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header, Placeholder } from "semantic-ui-react";
-import { AppConstants, history } from "../../core";
+import { AppConstants, history, sortList } from "../../core";
 import { deleteADialect, getADialect } from "../api";
 import { EditDialectDetails, EditExternalClaims } from "../components";
 import { ClaimManagementConstants } from "../constants";
@@ -150,7 +150,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 sort
             })
                 .then((response) => {
-                    setClaims(response);
+                    setClaims(sortList(response, "claimURI", true));
                 })
                 .catch((error) => {
                     dispatch(
