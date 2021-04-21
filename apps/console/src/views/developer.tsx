@@ -17,7 +17,14 @@
  */
 
 import { hasRequiredScopesForAdminView } from "@wso2is/core/helpers";
-import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    ChildRouteInterface,
+    CommonExtendedFeatureConfig,
+    CommonExtensionsConfigInterface,
+    ProfileInfoInterface,
+    RouteInterface
+} from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
@@ -99,6 +106,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const extendedConfig: CommonExtensionsConfigInterface = useSelector((state: AppState) => state.config.extensions);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
@@ -132,9 +140,11 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             return;
         }
 
-        const routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const routes: RouteInterface[] = CommonRouteUtils
+            .filterEnabledRoutes<FeatureConfigInterface, CommonExtendedFeatureConfig>(
             getDeveloperViewRoutes(),
             featureConfig,
+            extendedConfig?.features,
             allowedScopes);
 
         // Try to handle any un-expected routing issues. Returns a void if no issues are found.

@@ -52,6 +52,7 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "../models";
+import { ExtensionsConfigInterface } from "../../../extensions";
 
 /**
  * Combines all the reducers.
@@ -68,7 +69,8 @@ export const reducers = combineReducers({
         ServiceResourceEndpointsInterface,
         FeatureConfigInterface,
         I18nModuleOptionsInterface,
-        UIConfigInterface
+        UIConfigInterface,
+        ExtensionsConfigInterface
         >(commonConfigReducerInitialState),
     form: formReducer,
     global: commonGlobalReducer<AlertInterface, System, SupportedLanguagesMeta>(commonGlobalReducerInitialState),

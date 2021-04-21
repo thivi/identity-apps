@@ -26,10 +26,11 @@ import { CommonConfigActionTypes, CommonConfigActions } from "../actions/types";
  *
  * @return {CommonConfigReducerStateInterface<T, S, U, V, W> The new state.
  */
-export const commonConfigReducer = <T, S, U, V, W>(initialState: CommonConfigReducerStateInterface<T, S, U, V, W>) => (
-    state: CommonConfigReducerStateInterface<T, S, U, V, W> = initialState,
-    action: CommonConfigActions<T, S, U, V, W>
-): CommonConfigReducerStateInterface<T, S, U, V, W> => {
+export const commonConfigReducer =
+    <T, S, U, V, W, X>(initialState: CommonConfigReducerStateInterface<T, S, U, V, W, X>) => (
+    state: CommonConfigReducerStateInterface<T, S, U, V, W, X> = initialState,
+    action: CommonConfigActions<T, S, U, V, W, X>
+): CommonConfigReducerStateInterface<T, S, U, V, W, X> => {
 
     switch (action.type) {
         case CommonConfigActionTypes.SET_DEPLOYMENT_CONFIGS:
@@ -56,6 +57,11 @@ export const commonConfigReducer = <T, S, U, V, W>(initialState: CommonConfigRed
             return {
                 ...state,
                 ui: action.payload
+            };
+        case CommonConfigActionTypes.SET_EXTENSIONS_CONFIGS:
+            return {
+                ...state,
+                extensions: action.payload
             };
         default:
             return state;

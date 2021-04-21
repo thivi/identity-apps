@@ -23,7 +23,7 @@ import { GravatarConfig } from "./profile";
 /**
  * Common interface for configs.
  */
-export interface CommonConfigInterface<T, S, U, V, W> {
+export interface CommonConfigInterface<T, S, U, V, W, X> {
     /**
      * Deployment related configurations.
      */
@@ -44,6 +44,25 @@ export interface CommonConfigInterface<T, S, U, V, W> {
      * UI configurations.
      */
     ui?: W;
+    /**
+     * Extensions configurations.
+     */
+    extensions: X;
+}
+
+/**
+ * Common extended feature config interface.
+ */
+export interface CommonExtendedFeatureConfig {
+    [key: string]: FeatureAccessConfigInterface;
+}
+
+/**
+ * Common extensions config interface.
+ */
+export interface CommonExtensionsConfigInterface {
+    features?: CommonExtendedFeatureConfig;
+    [key: string]: any;
 }
 
 /**

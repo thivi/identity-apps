@@ -17,7 +17,7 @@
  */
 
 import { AuthenticatedUserInterface } from "@wso2/identity-oidc-js";
-import { CommonAuthReducerStateInterface, CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { CommonAuthReducerStateInterface, CommonConfigReducerStateInterface, CommonExtensionsConfigInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     DeploymentConfigInterface,
@@ -35,7 +35,9 @@ export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
-    UIConfigInterface>;
+    UIConfigInterface,
+    CommonExtensionsConfigInterface
+>;
 
 /**
  * Help panel reducer state interface.

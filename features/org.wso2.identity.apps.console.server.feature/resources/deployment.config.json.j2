@@ -450,47 +450,6 @@
                     {% endif %}
                 }
             },
-            "manageGettingStarted": {
-                "disabledFeatures": [
-                    {% if console.manage_getting_started.disabled_features is defined %}
-                    {% for feature in console.manage_getting_started.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled":{% if console.manage_getting_started.scopes is defined %} {{ console.manage_getting_started.enabled }},
-                    {% else %} true,
-                    {% endif %}
-                "scopes": {
-                    {% if console.manage_getting_started.scopes is defined %}
-                    {% for operation, scopes in console.manage_getting_startedscopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                            "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": [],
-                        "read": [],
-                        "update": [],
-                        "delete": []
-                    {% endif %}
-                },
-                "shouldHaveAllScopes": {
-                    {% if console.manage_getting_started.shouldHaveAllScopes is defined %}
-                    {% for operation, flag in console.manage_getting_started.shouldHaveAllScopes.items() %}
-                    "{{ operation }}": "{{ flag }}"
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                        "create": true,
-                        "read": true,
-                        "update": true,
-                        "delete": true
-                    {% endif %}
-                }
-            },
             "oidcScopes": {
                 "disabledFeatures": [
                     {% if console.oidc_scopes.disabled_features is defined %}

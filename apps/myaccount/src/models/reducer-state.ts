@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { CommonConfigReducerStateInterface, CommonExtensionsConfigInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     DeploymentConfigInterface,
@@ -33,4 +33,5 @@ export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
-    UIConfigInterface>;
+    UIConfigInterface,
+    CommonExtensionsConfigInterface>;

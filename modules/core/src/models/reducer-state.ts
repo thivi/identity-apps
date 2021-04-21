@@ -126,4 +126,4 @@ export interface CommonProfileReducerStateInterface<T, S, U> {
 /**
  * Interface for common config reducer state.
  */
-export type CommonConfigReducerStateInterface<T, S, U, V, W> = CommonConfigInterface<T, S, U, V, W>;
+export type CommonConfigReducerStateInterface<T, S, U, V, W, X> = CommonConfigInterface<T, S, U, V, W, X>;

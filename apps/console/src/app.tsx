@@ -17,9 +17,10 @@
  */
 
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
-import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { CommonExtensionsConfigInterface, RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
+    setExtensionsConfigs,
     setI18nConfigs,
     setServiceResourceEndpoints,
     setUIConfigs
@@ -84,6 +85,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+        dispatch(setExtensionsConfigs<CommonExtensionsConfigInterface>(Config.getExtensionsConfig()));
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**

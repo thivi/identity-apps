@@ -24,6 +24,7 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "../../models";
+import { ExtensionsConfigInterface } from "../../../../extensions";
 
 /**
  * Initial state for the common config reducer.
@@ -33,10 +34,11 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
-    UIConfigInterface> = {
-
+    UIConfigInterface,
+    ExtensionsConfigInterface> = {
     deployment: null,
     endpoints: null,
+    extensions: null,
     features: null,
     i18n: null,
     ui: null

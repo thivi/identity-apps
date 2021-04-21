@@ -17,7 +17,14 @@
  */
 
 import { hasRequiredScopes, hasRequiredScopesForAdminView } from "@wso2is/core/helpers";
-import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    ChildRouteInterface,
+    CommonExtendedFeatureConfig,
+    CommonExtensionsConfigInterface,
+    ProfileInfoInterface,
+    RouteInterface
+} from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
@@ -105,6 +112,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const extendedConfig: CommonExtensionsConfigInterface = useSelector((state: AppState) => state.config.extensions);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
@@ -137,7 +145,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     useEffect(() => {
         setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-        
+
         if (governanceConnectorsEvaluated === true) {
             RouteUtils.gracefullyHandleRouting(filteredRoutes,
                 AppConstants.getAdminViewBasePath(),
@@ -156,9 +164,10 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(
-            CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface, CommonExtendedFeatureConfig>(
                 getAdminViewRoutes(),
                 featureConfig,
+                extendedConfig?.features,
                 allowedScopes)
         );
 
@@ -187,15 +196,17 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
             GovernanceConnectorUtils.getGovernanceConnectors();
-            
+
             return;
         }
 
         if (!governanceConnectorRoutesAdded) {
 
-            const filteredRoutesClone: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            const filteredRoutesClone: RouteInterface[] = CommonRouteUtils
+                .filterEnabledRoutes<FeatureConfigInterface, CommonExtendedFeatureConfig>(
                 getAdminViewRoutes(),
                 featureConfig,
+                extendedConfig?.features,
                 allowedScopes);
 
             governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {

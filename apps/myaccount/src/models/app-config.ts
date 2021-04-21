@@ -20,9 +20,10 @@ import { ResponseMode, Storage } from "@wso2/identity-oidc-js";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
+    CommonExtensionsConfigInterface,
     CommonUIConfigInterface,
     FeatureAccessConfigInterface
-} from "@wso2is/core/models";
+}from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 
 export type ConfigInterface = CommonConfigInterface<
@@ -30,7 +31,8 @@ export type ConfigInterface = CommonConfigInterface<
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
-    UIConfigInterface>;
+    UIConfigInterface,
+    CommonExtensionsConfigInterface>;
 
 /**
  * Model of the application configurations.

@@ -20,6 +20,7 @@ import { ResponseMode, Storage } from "@wso2/identity-oidc-js";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
+    CommonExtensionsConfigInterface,
     CommonUIConfigInterface,
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
@@ -28,7 +29,7 @@ import { ApplicationTemplateLoadingStrategies, ApplicationsResourceEndpointsInte
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims";
 import { GroupsResourceEndpointsInterface } from "../../groups";
-import { IdentityProviderTemplateLoadingStrategies, IDPResourceEndpointsInterface } from "../../identity-providers";
+import { IDPResourceEndpointsInterface, IdentityProviderTemplateLoadingStrategies } from "../../identity-providers";
 import { ScopesResourceEndpointsInterface } from "../../oidc-scopes";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
@@ -40,7 +41,8 @@ export type ConfigInterface = CommonConfigInterface<
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
-    UIConfigInterface>;
+    UIConfigInterface,
+    CommonExtensionsConfigInterface>;
 
 /**
  * Application configuration interface.

@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { RouteInterface } from "@wso2is/core/models";
+import {
+    CommonExtendedFeatureConfig,
+    CommonExtensionsConfigInterface,
+    RouteInterface
+} from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
     ContentLoader,
@@ -76,6 +80,7 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const extendedConfig: CommonExtensionsConfigInterface = useSelector((state: AppState) => state.config.extensions);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getFullScreenViewRoutes());
@@ -87,9 +92,11 @@ export const FullScreenView: FunctionComponent<FullScreenViewPropsInterface> = (
             return;
         }
 
-        const routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+        const routes: RouteInterface[] = CommonRouteUtils
+            .filterEnabledRoutes<FeatureConfigInterface, CommonExtendedFeatureConfig>(
             getFullScreenViewRoutes(),
-            featureConfig,
+                featureConfig,
+            extendedConfig?.features,
             allowedScopes);
 
         // Try to handle any un-expected routing issues. Returns a void if no issues are found.

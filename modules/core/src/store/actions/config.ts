@@ -19,6 +19,7 @@
 import {
     CommonConfigActionTypes,
     SetDeploymentConfigsActionInterface,
+    SetExtensionsConfigsActionInterface,
     SetFeatureConfigsActionInterface,
     SetI18nConfigsActionInterface,
     SetServiceResourceEndpointsActionInterface,
@@ -83,4 +84,16 @@ export const setI18nConfigs = <T>(configs: T): SetI18nConfigsActionInterface<T> 
 export const setUIConfigs = <T>(configs: T): SetUIConfigsActionInterface<T> => ({
     payload: configs,
     type: CommonConfigActionTypes.SET_UI_CONFIGS
+});
+
+/**
+ * Redux action to set the extensions configs.
+ *
+ * @param {T} configs - Extensions configs.
+ *
+ * @return {SetUIConfigsActionInterface<T>} An action of type `CommonConfigActionTypes.SET_EXTENSIONS_CONFIGS`
+ */
+export const setExtensionsConfigs = <T>(configs: T): SetExtensionsConfigsActionInterface<T> => ({
+    payload: configs,
+    type: CommonConfigActionTypes.SET_EXTENSIONS_CONFIGS
 });

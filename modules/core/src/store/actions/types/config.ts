@@ -53,6 +53,12 @@ export enum CommonConfigActionTypes {
      * @type {string}
      */
     SET_UI_CONFIGS = "SET_UI_CONFIGS",
+    /**
+     * Action type to set the extensions configs.
+     *
+     * @type {string}
+     */
+    SET_EXTENSIONS_CONFIGS = "SET_EXTENSIONS_CONFIGS"
 }
 
 /**
@@ -103,10 +109,20 @@ export interface SetUIConfigsActionInterface<W = {}> extends CommonConfigBaseAct
 }
 
 /**
+ * Action interface to set the extensions configs.
+ */
+export interface SetExtensionsConfigsActionInterface<X = {}> extends CommonConfigBaseActionInterface {
+    payload: X;
+    type: CommonConfigActionTypes.SET_EXTENSIONS_CONFIGS;
+}
+
+/**
  * Export action interfaces.
  */
-export type CommonConfigActions<T, S, U, V, W> = SetDeploymentConfigsActionInterface<T>
+export type CommonConfigActions<T, S, U, V, W, X> =
+    | SetDeploymentConfigsActionInterface<T>
     | SetServiceResourceEndpointsActionInterface<S>
     | SetFeatureConfigsActionInterface<U>
     | SetI18nConfigsActionInterface<V>
-    | SetUIConfigsActionInterface<W>;
+    | SetUIConfigsActionInterface<W>
+    | SetExtensionsConfigsActionInterface<X>;

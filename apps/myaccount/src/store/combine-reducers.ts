@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { CommonExtensionsConfigInterface } from "@wso2is/core/models";
 import { commonConfigReducer } from "@wso2is/core/store";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { combineReducers } from "redux";
@@ -40,7 +41,8 @@ export const reducers = combineReducers({
         ServiceResourceEndpointsInterface,
         FeatureConfigInterface,
         I18nModuleOptionsInterface,
-        UIConfigInterface
+        UIConfigInterface,
+        CommonExtensionsConfigInterface
         >(commonConfigReducerInitialState),
     global: globalReducer,
     loaders: LoadersReducer,
