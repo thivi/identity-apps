@@ -41,11 +41,13 @@ export class RouteUtils {
      *
      * @param {RouteInterface[]} routes - Routes to evaluate.
      * @param {T} featureConfig - Feature config.
+     * @param {R} extendedFeatureConfig - Extended feature config.
      * @param {string} allowedScopes - Set of allowed scopes.
      * @return {RouteInterface[]} Filtered routes.
      */
-    public static filterEnabledRoutes<T>(routes: RouteInterface[],
+    public static filterEnabledRoutes<T, R>(routes: RouteInterface[],
                                          featureConfig: T,
+                                         extendedFeatureConfig: R,
                                          allowedScopes: string): RouteInterface[] {
 
         // Filters features based on scope requirements.
@@ -66,7 +68,19 @@ export class RouteUtils {
                 }
 
                 if (!feature) {
-                    return true;
+                    if (extendedFeatureConfig) {
+                        for (const [ key, value ] of Object.entries(extendedFeatureConfig)) {
+                            if (key === route.id) {
+                                feature = value;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!feature) {
+                        return true;
+                    }
                 }
 
                 return hasRequiredScopes(feature, feature?.scopes?.read, allowedScopes,
